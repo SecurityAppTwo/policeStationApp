@@ -7,7 +7,7 @@
           {{ button.name }}
           </a> 
         </button>
-          <i class="fas fa-calendar-week fa-7x"  ></i>
+          <i class="fas fa-calendar-week fa-7x  "  ></i>
       </div>
     </div>
     <actions-page/>
