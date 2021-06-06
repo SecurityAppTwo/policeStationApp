@@ -2,12 +2,12 @@
   "name": "web-project",
   "version": "0.1.0",
   "private": true,
+  "main": "src/main.js"
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "start": "./src/App.vue",
-    "main": "./src/main.js"
+    "start": "src/App"
   },
   "dependencies": {
     "core-js": "^3.6.5",
