@@ -15,9 +15,9 @@
 </template>
 
 <script>
+
 // import HelloWorld from './components/HelloWorld.vue'
 import ActionsPage from './components/ActionsPage.vue'
-
 export default {
   name: 'App',
   components: {
@@ -33,7 +33,6 @@ export default {
 
 <style>
 #app {
-
 }
 
 a{
