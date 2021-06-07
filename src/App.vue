@@ -1,5 +1,5 @@
 <template>
-  <div id="app" style="background-color: #75899f">
+  <div id="app" style="background-color: #6495ED; height: 100vh;">
     <div class = "row">
       <div class = "col" v-for="(button, key) in buttons" :key = "key">
         <button class = "center">
@@ -7,7 +7,7 @@
           {{ button.name }}
           </a> 
         </button>
-          <i class="fas fa-calendar-week fa-7x  "  ></i>
+          <i style="padding-top:3vh !important" class="fas fa-calendar-week fa-7x  "  ></i>
       </div>
     </div>
     <actions-page/>
