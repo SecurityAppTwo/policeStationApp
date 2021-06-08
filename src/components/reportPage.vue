@@ -14,10 +14,10 @@
             :key="index"
             v-on:click="openModal(report)"
           >
-            {{ report.type }} {{ report.date }}
+            {{ report.type }} <br />
+            {{ report.date }}
           </li>
         </ul>
-
       </button>
     </div>
 
@@ -39,12 +39,15 @@
           </div>
 
           <div class="modal__body">
-            <h2>סוג אירוע: {{ currentReport.type }}</h2>
+            <!-- <h2>סוג אירוע: {{ currentReport.type }}</h2>
             <h2>סוג נשק: {{ currentReport.weapon_type }}</h2>
             <h2>נפגעים: {{ currentReport.injured_count }}</h2>
             <h2>זמן האירוע: {{ currentReport.date }}</h2>
             <h2>זמן הדיווח: {{ currentReport.reported_date }}</h2>
-            <h2>זהות המדווח: {{ currentReport.reported_by }}</h2>
+            <h2>זהות המדווח: {{ currentReport.reported_by }}</h2> -->
+            <div v-for="report in currentReport" :key="report">
+              {{ report }} : {{}}
+            </div>
             <slot name="body" />
           </div>
 
@@ -75,7 +78,6 @@ export default {
     };
   },
   async created() {
-   
     await axios
       .get("http://localhost:8080/reports/allEventsReported")
       .then(response => {
@@ -88,10 +90,7 @@ export default {
         throw e;
       });
 
-
     this.changeDates();
-
-   
   },
   methods: {
     closeModal() {
