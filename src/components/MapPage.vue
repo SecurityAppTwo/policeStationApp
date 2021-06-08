@@ -20,8 +20,8 @@ export default {};
 .map {
   margin-top: 300px;
   margin-bottom: 200px;
-  width: 50vw;
-  height: 30vh;
+  width: 80vw;
+  height: 40vh;
   display: flex;
   justify-content: center;
 }
