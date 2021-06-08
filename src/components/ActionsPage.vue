@@ -135,7 +135,7 @@
               <vueMultiSelect
                 :options="{ multi: true }"
                 v-model="power"
-                :selectOptions="this.allCops"
+                :selectOptions="this.allUsers"
               />
               <label for="fname">כוח מתוכנן</label>
             </div>
@@ -325,7 +325,7 @@ export default {
       });
       this.changeLocation();
     },
-    addAction() {
+    async addAction() {
       //   const newActivity = {
       //     description: this.description,
       //     date: this.time,
@@ -335,7 +335,7 @@ export default {
       //     target: this.target,
       //     approvedBy: this.approve
       //   };
-      axios
+      await axios
         .post("http://localhost:8081/activities/addActivity", {
           description: this.description,
           time: this.time,
@@ -347,6 +347,17 @@ export default {
         .then(function(response) {
           console.log(response);
         });
+
+      await axios
+        .get("http://localhost:8081/activities/all")
+        .then(response => {
+          this.allActivities = response.data;
+        })
+        .catch(e => {
+          throw e;
+        });
+
+      this.changeDates();
     }
   }
 };
