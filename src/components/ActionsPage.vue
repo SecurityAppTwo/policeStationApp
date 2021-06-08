@@ -6,7 +6,7 @@
       </h3></a
     >
     <button
-      style="color:white; background-color:blue; text-align: right; margin-left: 70vw;"
+      style="color:white;  background-color: #118ab2; text-align: right; margin-left: 70vw;"
     >
       <a style-="front-size: 20vw;">סינון </a>
     </button>
@@ -15,7 +15,10 @@
         class="roww"
         v-for="(action, key) in allActivities"
         :key="key"
-        v-on:click="openModal(action)"
+        v-on:click="
+          openModal(action);
+          addActCops(action.id);
+        "
       >
         <a class="insideButton">
           {{ action.description }}
@@ -24,7 +27,11 @@
           {{ action.date }}
         </a>
       </button>
-      <button class="nextP" v-on:click="openModal2()">
+      <button
+        style="background-color: #1b98e0"
+        class="nextP"
+        v-on:click="openModal2()"
+      >
         <i class="fas fa-plus fa-3x"></i>
       </button>
     </div>
@@ -47,11 +54,11 @@
           </div>
 
           <div class="modal__body">
-            <h2>סוג פעולה: {{ currentAction.kind }}</h2>
+            <h2>סוג פעולה: {{ currentAction.activity_type }}</h2>
             <h2>זמן מתוכנן לפעילות: {{ currentAction.date }}</h2>
-            <h2>כוח מתוכנן: {{ currentAction.power }}</h2>
-            <h2>מטרת הפעילות: {{ currentAction.target }}</h2>
-            <h2>אישור הפעילות: {{ currentAction.approvedBy }}</h2>
+            <h2>כוח מתוכנן: {{ currentActivityCops }}</h2>
+            <h2>מטרת הפעילות: {{ currentAction.description }}</h2>
+            <h2>אישור הפעילות: {{ currentAction.approved }}</h2>
             <h2>מיקום: {{ currentAction.location }}</h2>
             <slot name="body" />
           </div>
@@ -122,6 +129,10 @@
                 v-model="force"
                 placeholder="כוח מתוכנן.."
               />
+              <!-- <multiselect
+                v-model="value"
+                :options="this.allCops"
+              ></multiselect> -->
               <label for="fname">כוח מתוכנן</label>
             </div>
             <div>
@@ -177,55 +188,22 @@
 </template>
 
 <script>
+const moment = require("moment");
 import axios from "axios";
+// import Multiselect from "vue-multiselect";
 
 export default {
   name: "actionsPage",
   components: {},
   data() {
     return {
-      actions: [
-        {
-          description: "החשוד שדד זקנה ועל כך צריך להעצר",
-          date: "27/7/2011",
-          location: "מודיעין",
-          kind: "מארב",
-          power: "פרלטה, סנטיאגו ועומרי",
-          target: "מארב לתפיסת החשוד",
-          approvedBy: "קפטן ריי הולט"
-        },
-        {
-          description: "החשוד מחזיק נשק לעצור במיידי",
-          date: "27/5/2004",
-          location: "באר שבע",
-          kind: "מארב",
-          power: "פרלטה, סנטיאגו ועומרי",
-          target: "מארב לתפיסת החשוד",
-          approvedBy: "קפטן ריי הולט"
-        },
-        {
-          description: "החשוד נמצא בתל אביב",
-          date: "1/2/2021",
-          location: "תל אביב",
-          kind: "מארב",
-          power: "פרלטה, סנטיאגו ועומרי",
-          target: "מארב לתפיסת החשוד",
-          approvedBy: "קפטן ריי הולט"
-        }
-      ],
       show: false,
       show2: false,
-      location: "",
-      approve: "",
-      target: "",
-      force: "",
-      time: "",
-      kind: "",
-      description: "",
       currentAction: null,
       allActivities: null,
       allUsers: null,
-      allCops: null
+      allCops: null,
+      currentActivityCops: []
     };
   },
   async created() {
@@ -258,6 +236,9 @@ export default {
       .catch(e => {
         throw e;
       });
+
+    this.changeDates();
+    console.log(this.allActivities);
   },
   methods: {
     closeModal() {
@@ -269,6 +250,13 @@ export default {
       this.show = true;
       document.querySelector("body").classList.add("overflow-hidden");
     },
+    changeLocation() {
+      this.allUsers.forEach(element => {
+        if (element.name === this.currentActivityCops[0]) {
+          this.currentAction.location = `${element.lon} , ${element.lat}`;
+        }
+      });
+    },
     closeModal2() {
       this.show2 = false;
       document.querySelector("body").classList.remove("overflow-hidden");
@@ -276,6 +264,23 @@ export default {
     openModal2() {
       this.show2 = true;
       document.querySelector("body").classList.add("overflow-hidden");
+    },
+    changeDates() {
+      var format = "YYYY-MM-DD";
+      this.allActivities.forEach(element => {
+        var newDate = new Date(element.date);
+        element.date = moment(newDate).format(format);
+        console.log(element.date);
+      });
+    },
+    addActCops(id) {
+      this.currentActivityCops = [];
+      this.allCops.forEach(element2 => {
+        if (id == element2.activity) {
+          this.currentActivityCops.push(element2.cop_name);
+        }
+      });
+      this.changeLocation();
     },
     addAction() {
       console.log(this.actions);
@@ -297,6 +302,7 @@ export default {
 <style>
 .roww {
   width: 100%;
+  background-color: #1b98e0;
 }
 
 .nextP {
@@ -314,7 +320,7 @@ export default {
 }
 
 .window {
-  background-color: wheat;
+  background-color: #b4c5e4;
   height: 46vh;
   width: 71%;
   margin-left: 10%;
