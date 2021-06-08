@@ -18,12 +18,6 @@
           </li>
         </ul>
 
-        <!-- <a class="insideButton">
-          {{ action.description }}
-        </a>
-        <a>
-          {{ action.date }}
-        </a> -->
       </button>
     </div>
 
@@ -66,7 +60,6 @@
 <script>
 const moment = require("moment");
 import axios from "axios";
-// import Multiselect from "vue-multiselect";
 
 export default {
   name: "reportPage",
@@ -82,18 +75,7 @@ export default {
     };
   },
   async created() {
-    // await axios
-    //   .get("http://localhost:8081/activities/all")
-    //   .then(response => {
-    //     this.allActivities = response.data;
-    //   })
-    //   .catch(e => {
-    //     throw e;
-    //   });
-
-    // console.log(this.allActivities);
-    // console.log(1);
-
+   
     await axios
       .get("http://localhost:8080/reports/allEventsReported")
       .then(response => {
@@ -106,27 +88,10 @@ export default {
         throw e;
       });
 
-    // await axios
-    //   .get("http://localhost:8081/activities/users")
-    //   .then(response => {
-    //     this.allUsers = response.data;
-    //   })
-    //   .catch(e => {
-    //     throw e;
-    //   });
-
-    // await axios
-    //   .get("http://localhost:8081/activities/cops")
-    //   .then(response => {
-    //     this.allCops = response.data;
-    //   })
-    //   .catch(e => {
-    //     throw e;
-    //   });
 
     this.changeDates();
 
-    // console.log(this.allActivities);
+   
   },
   methods: {
     closeModal() {
@@ -135,7 +100,7 @@ export default {
     },
     openModal(theDude) {
       this.currentReport = theDude;
-
+      console.log(this.currentReport);
       this.show = true;
       document.querySelector("body").classList.add("overflow-hidden");
     },
