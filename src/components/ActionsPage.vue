@@ -102,13 +102,23 @@
               <label for="fname">תיאור</label>
             </div>
             <div>
-              <input
+              <!-- <input
                 type="text"
                 id="kind"
                 name="kind"
                 v-model="kind"
                 placeholder="סוג הפעולה.."
-              />
+              /> -->
+              <select v-model="type">
+                <option disabled value="">Please select one</option>
+                <option
+                  v-bind:value="type.id"
+                  v-for="(type, key) in allTypes"
+                  :key="key"
+                >
+                  {{ type.name }}
+                </option>
+              </select>
               <label for="fname">סוג הפעולה</label>
             </div>
             <div>
@@ -122,17 +132,11 @@
               <label for="fname">זמן מתוכנן לפעילות</label>
             </div>
             <div>
-              <input
-                type="text"
-                id="force"
-                name="force"
-                v-model="force"
-                placeholder="כוח מתוכנן.."
+              <vueMultiSelect
+                :options="{ multi: true }"
+                v-model="power"
+                :selectOptions="this.allCops"
               />
-              <!-- <multiselect
-                v-model="value"
-                :options="this.allCops"
-              ></multiselect> -->
               <label for="fname">כוח מתוכנן</label>
             </div>
             <div>
@@ -146,13 +150,23 @@
               <label for="fname">מטרת הפעילות</label>
             </div>
             <div>
-              <input
+              <!-- <input
                 type="text"
                 id="approve"
                 name="approve"
                 v-model="approve"
                 placeholder="אישור הפעילות.."
-              />
+              /> -->
+              <select v-model="approve">
+                <option disabled value="">Please select one</option>
+                <option
+                  v-bind:value="user.id"
+                  v-for="(user, key) in allUsers"
+                  :key="key"
+                >
+                  {{ user.name }}
+                </option>
+              </select>
               <label for="fname">אישור הפעילות</label>
             </div>
             <div>
@@ -190,23 +204,44 @@
 <script>
 const moment = require("moment");
 import axios from "axios";
-// import Multiselect from "vue-multiselect";
+import vueMultiSelect from "vue-multi-select";
+import "vue-multi-select/dist/lib/vue-multi-select.css";
+// import vSelect from "vue-select";
 
 export default {
   name: "actionsPage",
-  components: {},
+  components: { vueMultiSelect },
   data() {
     return {
+      description: "",
+      approve: "",
+      location: "",
+      type: "",
+      target: "",
+      power: "",
+      time: "",
       show: false,
       show2: false,
       currentAction: null,
       allActivities: null,
       allUsers: null,
-      allCops: null,
+      allCops: [],
+      allTypes: null,
       currentActivityCops: []
     };
   },
   async created() {
+    await axios
+      .get("http://localhost:8081/activities/types")
+      .then(response => {
+        this.allTypes = response.data.map(type => ({
+          name: type.name,
+          id: type.id
+        }));
+      })
+      .catch(e => {
+        throw e;
+      });
     await axios
       .get("http://localhost:8081/activities/all")
       .then(response => {
@@ -231,7 +266,12 @@ export default {
     await axios
       .get("http://localhost:8081/activities/cops")
       .then(response => {
-        this.allCops = response.data;
+        console.log(response.data);
+        this.allCops = response.data.map(cop => ({
+          name: cop.cop_name,
+          id: cop.cop,
+          activity: cop.activity
+        }));
       })
       .catch(e => {
         throw e;
@@ -274,26 +314,39 @@ export default {
       });
     },
     addActCops(id) {
+      console.log(id);
       this.currentActivityCops = [];
       this.allCops.forEach(element2 => {
+        console.log(element2.activity);
+        console.log(element2.name);
         if (id == element2.activity) {
-          this.currentActivityCops.push(element2.cop_name);
+          this.currentActivityCops.push(element2.name);
         }
       });
       this.changeLocation();
     },
     addAction() {
-      console.log(this.actions);
-      this.actions.push({
-        description: this.description,
-        date: this.time,
-        location: this.location,
-        kind: this.kind,
-        power: this.force,
-        target: this.target,
-        approvedBy: this.approve
-      });
-      console.log(this.actions);
+      //   const newActivity = {
+      //     description: this.description,
+      //     date: this.time,
+      //     location: this.location,
+      //     type: this.type,
+      //     power: this.power.map(current => current.id),
+      //     target: this.target,
+      //     approvedBy: this.approve
+      //   };
+      axios
+        .post("http://localhost:8081/activities/addActivity", {
+          description: this.description,
+          time: this.time,
+          location: this.location,
+          type: this.type,
+          power: this.power.map(current => current.id),
+          approve: this.approve
+        })
+        .then(function(response) {
+          console.log(response);
+        });
     }
   }
 };
@@ -305,7 +358,8 @@ export default {
   background-color: #1b98e0;
 }
 
-.nextP {
+.multiselect {
+  width: "10vw";
 }
 
 .omri {
@@ -347,12 +401,13 @@ export default {
 .modal__dialog {
   background-color: #ffffff;
   position: relative;
-  width: 600px;
+  width: 80vw;
   margin: 50px auto;
   display: flex;
   flex-direction: column;
   border-radius: 5px;
   z-index: 2;
+  height: 50vh;
 }
 .modal__close {
   width: 30px;
@@ -363,6 +418,7 @@ export default {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+  flex: 1;
 }
 .modal__body {
   padding: 10px 20px 10px;
@@ -372,6 +428,7 @@ export default {
   align-items: stretch;
   text-align: right;
   flex: right;
+  flex: 3;
 }
 .modal__footer {
   padding: 10px 20px 20px;
