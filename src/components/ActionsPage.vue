@@ -1,214 +1,306 @@
 <template>
-  <div>
+  <div class="ActionsPage">
     <Navbar></Navbar>
-    <div class="ActionsPage">
-      <a
-        ><h3 style="color: red; front-size: 40vw; text-align: center;">
-          דוח פעילויות
-        </h3></a
+    <a
+      ><h3
+        style="color: red; front-size: 40vw; text-align: center; margin-top: 3%;"
       >
+        דוח פעילויות
+      </h3></a
+    >
+    <select
+      v-model="idk"
+      style="background-color: gray; text-align: right; margin-left: 70vw;"
+    >
+      <option disabled value="">Please select one</option>
+      <option>הכל</option>
+      <option>הסתיים</option>
+      <option>מתוכנן</option>
+      <option>פעיל</option>
+    </select>
+    <select
+      v-model="idk2"
+      style="background-color: gray; text-align: right; margin-left: 20vw;"
+    >
+      <option disabled value="">Please select one</option>
+      <option>הכל</option>
+      <option>מארב</option>
+      <option>פטרול</option>
+      <option>מחסום מכוניות</option>
+    </select>
+    <div class="window" style="margin-top: 3%">
       <button
-        style="color:white;  background-color: #118ab2; text-align: right; margin-left: 70vw;"
+        class="roww"
+        v-for="(action, key) in filterByStatus()"
+        :key="key"
+        v-on:click="
+          openModal(action);
+          addActCops(action.id);
+        "
       >
-        <a style-="front-size: 20vw;">סינון </a>
+        <a style="float:right;">
+          {{ action.description }}
+        </a>
+        <a style="float: left;">
+          {{ action.date }}
+        </a>
       </button>
-      <div class="window">
-        <button
-          class="roww"
-          v-for="(action, key) in allActivities"
-          :key="key"
-          v-on:click="
-            openModal(action);
-            addActCops(action.id);
-          "
-        >
-          <a class="insideButton">
-            {{ action.description }}
-          </a>
-          <a>
-            {{ action.date }}
-          </a>
-        </button>
-        <button
-          style="background-color: #1b98e0"
-          class="nextP"
-          v-on:click="openModal2()"
-        >
-          <i class="fas fa-plus fa-3x"></i>
-        </button>
-      </div>
-
-      <transition name="fade">
-        <div class="modal" v-if="show">
-          <div class="modal__backdrop" @click="closeModal()" />
-
-          <div class="modal__dialog">
-            <div class="modal__header">
-              <slot name="header" />
-              <button type="button" class="modal__close" @click="closeModal()">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512">
-                  <path
-                    fill="currentColor"
-                    d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"
-                  ></path>
-                </svg>
-              </button>
-            </div>
-
-            <div class="modal__body">
-              <h2>סוג פעולה: {{ currentAction.activity_type }}</h2>
-              <h2>זמן מתוכנן לפעילות: {{ currentAction.date }}</h2>
-              <h2>כוח מתוכנן: {{ currentActivityCops }}</h2>
-              <h2>מטרת הפעילות: {{ currentAction.description }}</h2>
-              <h2>אישור הפעילות: {{ currentAction.approved }}</h2>
-              <h2>מיקום: {{ currentAction.location }}</h2>
-              <slot name="body" />
-            </div>
-
-            <div class="modal__footer">
-              <slot name="footer" />
-            </div>
-          </div>
-        </div>
-      </transition>
-
-      <transition name="fade">
-        <div class="modal" v-if="show2">
-          <div class="modal__backdrop" @click="closeModal2()" />
-
-          <div class="modal__dialog">
-            <div class="modal__header">
-              <h1 style="color: red;">
-                פעילות חדשה
-              </h1>
-              <slot name="header" />
-              <button type="button" class="modal__close" @click="closeModal2()">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512">
-                  <path
-                    fill="currentColor"
-                    d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"
-                  ></path>
-                </svg>
-              </button>
-            </div>
-
-            <div class="modal__body">
-              <div>
-                <input
-                  type="text"
-                  id="location"
-                  name="location"
-                  v-model="description"
-                  placeholder="מיקום.."
-                />
-                <label for="fname">תיאור</label>
-              </div>
-              <div>
-                <input
-                  type="text"
-                  id="kind"
-                  name="kind"
-                  v-model="kind"
-                  placeholder="סוג הפעולה.."
-                />
-                <label for="fname">סוג הפעולה</label>
-              </div>
-              <div>
-                <input
-                  type="text"
-                  id="time"
-                  name="time"
-                  v-model="time"
-                  placeholder="זמן מתכונן.."
-                />
-                <label for="fname">זמן מתוכנן לפעילות</label>
-              </div>
-              <div>
-                <input
-                  type="text"
-                  id="force"
-                  name="force"
-                  v-model="force"
-                  placeholder="כוח מתוכנן.."
-                />
-
-                <label for="fname">כוח מתוכנן</label>
-              </div>
-              <div>
-                <input
-                  type="text"
-                  id="target"
-                  name="target"
-                  v-model="target"
-                  placeholder="מטרת הפעילות.."
-                />
-                <label for="fname">מטרת הפעילות</label>
-              </div>
-              <div>
-                <input
-                  type="text"
-                  id="approve"
-                  name="approve"
-                  v-model="approve"
-                  placeholder="אישור הפעילות.."
-                />
-                <label for="fname">אישור הפעילות</label>
-              </div>
-              <div>
-                <input
-                  type="text"
-                  id="location"
-                  name="location"
-                  v-model="location"
-                  placeholder="מיקום.."
-                />
-                <label for="fname">מיקום</label>
-              </div>
-              <button
-                class="omri"
-                style="background-color: green;"
-                v-on:click="
-                  addAction();
-                  closeModal2();
-                "
-              >
-                יצירת פעולה
-              </button>
-              <slot name="body" />
-            </div>
-
-            <div class="modal__footer">
-              <slot name="footer" />
-            </div>
-          </div>
-        </div>
-      </transition>
     </div>
+    <button
+      style="background-color: #1b98e0; margin-left: 10%;"
+      class="nextP"
+      v-on:click="openModal2()"
+    >
+      <i class="fas fa-plus fa-3x"></i>
+    </button>
+
+    <transition name="fade">
+      <div class="modal" v-if="show">
+        <div class="modal__backdrop" @click="closeModal()" />
+
+        <div class="modal__dialog">
+          <div class="modal__header">
+            <slot name="header" />
+            <button type="button" class="modal__close" @click="closeModal()">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512">
+                <path
+                  fill="currentColor"
+                  d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"
+                ></path>
+              </svg>
+            </button>
+          </div>
+
+          <div class="modal__body">
+            <h2>סוג פעולה: {{ currentAction.activity_type }}</h2>
+            <h2>זמן מתוכנן לפעילות: {{ currentAction.date }}</h2>
+            <h2>כוח מתוכנן: {{ currentActivityCops }}</h2>
+            <h2>מטרת הפעילות: {{ currentAction.description }}</h2>
+            <h2>אישור הפעילות: {{ currentAction.approved }}</h2>
+            <h2>מיקום: {{ currentAction.location }}</h2>
+            <button
+              class="omri"
+              style="background-color: green;"
+              v-on:click="
+                changeStatus(currentAction.id, 1);
+                closeModal();
+                openModal3();
+              "
+            >
+              הוצא פעולה !
+            </button>
+            <button
+              class="omri"
+              style="background-color: red;"
+              v-on:click="
+                changeStatus(currentAction.id, 3);
+                closeModal();
+                openModal3();
+              "
+            >
+              סיים פעולה !
+            </button>
+            <slot name="body" />
+          </div>
+
+          <div class="modal__footer">
+            <slot name="footer" />
+          </div>
+        </div>
+      </div>
+    </transition>
+
+    <transition name="fade">
+      <div class="modal" v-if="show3">
+        <div class="modal__backdrop" @click="closeModal3()" />
+        <div>
+          <img
+            src="https://media1.giphy.com/media/Wozl9UAP6DG9vOotl8/giphy.gif?cid=ecf05e476xpgl8lyvuz5vjwdseufm0150kuzujs5eonlq9n4&rid=giphy.gif&ct=g"
+            style="width:70%; height: auto; margin-left: 14%; margin-top: 3%"
+          />
+          <div class="modal__header">
+            <h1 style="color: red;"></h1>
+            <slot name="header" />
+            <button type="button" class="modal__close" @click="closeModal3()">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512">
+                <path
+                  fill="currentColor"
+                  d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"
+                ></path>
+              </svg>
+            </button>
+          </div>
+
+          <div class="modal__body"></div>
+
+          <div class="modal__footer">
+            <slot name="footer" />
+          </div>
+        </div>
+      </div>
+    </transition>
+
+    <transition name="fade">
+      <div class="modal" v-if="show2">
+        <div class="modal__backdrop" @click="closeModal2()" />
+
+        <div class="modal__dialog">
+          <div class="modal__header">
+            <h1 style="color: red;">
+              פעילות חדשה
+            </h1>
+            <slot name="header" />
+            <button type="button" class="modal__close" @click="closeModal2()">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512">
+                <path
+                  fill="currentColor"
+                  d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"
+                ></path>
+              </svg>
+            </button>
+          </div>
+
+          <div class="modal__body">
+            <div>
+              <input
+                type="text"
+                id="location"
+                name="location"
+                v-model="description"
+                placeholder="מיקום.."
+              />
+              <label for="fname">תיאור</label>
+            </div>
+            <div>
+              <select v-model="type">
+                <option disabled value="">Please select one</option>
+                <option
+                  v-bind:value="type.id"
+                  v-for="(type, key) in allTypes"
+                  :key="key"
+                >
+                  {{ type.name }}
+                </option>
+              </select>
+              <label for="fname">סוג הפעולה</label>
+            </div>
+            <div>
+              <input
+                type="text"
+                id="time"
+                name="time"
+                v-model="time"
+                placeholder="זמן מתכונן.."
+              />
+              <label for="fname">זמן מתוכנן לפעילות</label>
+            </div>
+            <div>
+              <vueMultiSelect
+                :options="{ multi: true }"
+                v-model="power"
+                :selectOptions="this.allUsers"
+              />
+              <label for="fname">כוח מתוכנן</label>
+            </div>
+            <div>
+              <input
+                type="text"
+                id="target"
+                name="target"
+                v-model="target"
+                placeholder="מטרת הפעילות.."
+              />
+              <label for="fname">מטרת הפעילות</label>
+            </div>
+            <div>
+              <select v-model="approve">
+                <option disabled value="">Please select one</option>
+                <option
+                  v-bind:value="user.id"
+                  v-for="(user, key) in allUsers"
+                  :key="key"
+                >
+                  {{ user.name }}
+                </option>
+              </select>
+              <label for="fname">אישור הפעילות</label>
+            </div>
+            <div>
+              <input
+                type="text"
+                id="location"
+                name="location"
+                v-model="location"
+                placeholder="מיקום.."
+              />
+              <label for="fname">מיקום</label>
+            </div>
+            <button
+              class="omri"
+              style="background-color: green;"
+              v-on:click="
+                addAction();
+                closeModal2();
+              "
+            >
+              יצירת פעולה
+            </button>
+            <slot name="body" />
+          </div>
+
+          <div class="modal__footer">
+            <slot name="footer" />
+          </div>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
 <script>
 const moment = require("moment");
 import axios from "axios";
+import vueMultiSelect from "vue-multi-select";
+import "vue-multi-select/dist/lib/vue-multi-select.css";
 import Navbar from "./Navbar";
 
 export default {
-  name: "actionsPage",
-  components: {
-    Navbar
-  },
+  name: "ActionsPage",
+  components: { vueMultiSelect, Navbar },
   data() {
     return {
+      description: "",
+      approve: "",
+      location: "",
+      type: "",
+      target: "",
+      power: "",
+      time: "",
+      idk: "",
+      idk2: "",
       show: false,
       show2: false,
+      show3: false,
       currentAction: null,
       allActivities: null,
       allUsers: null,
-      allCops: null,
+      allCops: [],
+      allTypes: null,
       currentActivityCops: []
     };
   },
   async created() {
+    await axios
+      .get("http://localhost:8081/activities/types")
+      .then(response => {
+        this.allTypes = response.data.map(type => ({
+          name: type.name,
+          id: type.id
+        }));
+      })
+      .catch(e => {
+        throw e;
+      });
     await axios
       .get("http://localhost:8081/activities/all")
       .then(response => {
@@ -217,9 +309,6 @@ export default {
       .catch(e => {
         throw e;
       });
-
-    console.log(this.allActivities);
-    console.log(1);
 
     await axios
       .get("http://localhost:8081/activities/users")
@@ -233,22 +322,78 @@ export default {
     await axios
       .get("http://localhost:8081/activities/cops")
       .then(response => {
-        this.allCops = response.data;
+        this.allCops = response.data.map(cop => ({
+          name: cop.cop_name,
+          id: cop.cop,
+          activity: cop.activity
+        }));
       })
       .catch(e => {
         throw e;
       });
 
     this.changeDates();
-    console.log(this.allActivities);
   },
   methods: {
     closeModal() {
       this.show = false;
       document.querySelector("body").classList.remove("overflow-hidden");
     },
+    async changeStatus(id, status) {
+      console.log(id);
+      await axios.put("http://localhost:8081/activities/changeStatus", {
+        id: id,
+        theStatus: status
+      });
+
+      await axios
+        .get("http://localhost:8081/activities/all")
+        .then(response => {
+          this.allActivities = response.data;
+        })
+        .catch(e => {
+          throw e;
+        });
+      this.changeDates();
+    },
+
+    filterByStatus() {
+      if (this.idk === "") {
+        this.idk = "הכל";
+      }
+      if (this.idk2 === "") {
+        this.idk2 = "הכל";
+      }
+      // if (this.allActivities) {
+      //   this.allActivities.sort(function(a, b) {
+      //     return new Date(b.date) - new Date(a.date);
+      //   });
+      // }
+      if (this.idk === "הכל" && this.idk2 === "הכל") {
+        return this.allActivities;
+      }
+
+      if (this.idk === "הכל" && this.idk2 !== "הכל") {
+        return this.allActivities.filter(
+          activity => activity.activity_type === this.idk2
+        );
+      }
+
+      if (this.idk !== "הכל" && this.idk2 === "הכל") {
+        return this.allActivities.filter(
+          activity => activity.activity_status === this.idk
+        );
+      }
+
+      return this.allActivities.filter(
+        activity =>
+          activity.activity_status === this.idk &&
+          activity.activity_type === this.idk2
+      );
+    },
     openModal(theDude) {
       this.currentAction = theDude;
+      console.log(this.currentAction);
       this.show = true;
       document.querySelector("body").classList.add("overflow-hidden");
     },
@@ -267,35 +412,63 @@ export default {
       this.show2 = true;
       document.querySelector("body").classList.add("overflow-hidden");
     },
+    openModal3() {
+      this.show3 = true;
+      document.querySelector("body").classList.add("overflow-hidden");
+    },
+    closeModal3() {
+      this.show3 = false;
+      document.querySelector("body").classList.add("overflow-hidden");
+    },
     changeDates() {
       var format = "YYYY-MM-DD";
       this.allActivities.forEach(element => {
         var newDate = new Date(element.date);
         element.date = moment(newDate).format(format);
-        console.log(element.date);
       });
     },
     addActCops(id) {
       this.currentActivityCops = [];
       this.allCops.forEach(element2 => {
         if (id == element2.activity) {
-          this.currentActivityCops.push(element2.cop_name);
+          this.currentActivityCops.push(element2.name);
         }
       });
       this.changeLocation();
     },
-    addAction() {
-      console.log(this.actions);
-      this.actions.push({
-        description: this.description,
-        date: this.time,
-        location: this.location,
-        kind: this.kind,
-        power: this.force,
-        target: this.target,
-        approvedBy: this.approve
-      });
-      console.log(this.actions);
+    async addAction() {
+      //   const newActivity = {
+      //     description: this.description,
+      //     date: this.time,
+      //     location: this.location,
+      //     type: this.type,
+      //     power: this.power.map(current => current.id),
+      //     target: this.target,
+      //     approvedBy: this.approve
+      //   };
+      await axios
+        .post("http://localhost:8081/activities/addActivity", {
+          description: this.description,
+          time: this.time,
+          location: this.location,
+          type: this.type,
+          power: this.power.map(current => current.id),
+          approve: this.approve
+        })
+        .then(function(response) {
+          console.log(response);
+        });
+
+      await axios
+        .get("http://localhost:8081/activities/all")
+        .then(response => {
+          this.allActivities = response.data;
+        })
+        .catch(e => {
+          throw e;
+        });
+
+      this.changeDates();
     }
   }
 };
@@ -304,7 +477,21 @@ export default {
 <style>
 .roww {
   width: 100%;
-  background-color: #1b98e0;
+  background-color: #80c5a0;
+  height: 100px;
+  text-align: right;
+  direction: rtl;
+  border-radius: 30px;
+  border-style: inset;
+  /* margin-left: 10%; */
+}
+
+.roww:hover {
+  background-color: #caf0f8;
+}
+
+.multiselect {
+  width: "10vw";
 }
 
 .omri {
@@ -316,17 +503,17 @@ export default {
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
+  width: 50%;
+  flex: center;
+  justify-content: center;
 }
 
 .window {
   background-color: #b4c5e4;
-  top: 20%;
-  height: 100vh;
-  width: 74%;
+  height: 46vh;
+  width: 71%;
   margin-left: 10%;
-  padding-top: 80px;
-  padding-left: 50px;
-  padding-right: 50px;
+  overflow: auto;
 }
 
 .modal {
@@ -351,12 +538,14 @@ export default {
 .modal__dialog {
   background-color: #ffffff;
   position: relative;
-  width: 600px;
+  width: 50vw;
+  margin-top: 30%;
   margin: 50px auto;
   display: flex;
   flex-direction: column;
   border-radius: 5px;
   z-index: 2;
+  height: 50vh;
 }
 .modal__close {
   width: 30px;
@@ -367,6 +556,7 @@ export default {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+  flex: 1;
 }
 .modal__body {
   padding: 10px 20px 10px;
@@ -376,6 +566,7 @@ export default {
   align-items: stretch;
   text-align: right;
   flex: right;
+  flex: 3;
 }
 .modal__footer {
   padding: 10px 20px 20px;

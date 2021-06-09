@@ -13,7 +13,7 @@
         <div class="colum">
           <div class="home">
             <img src="./../assets/1.png" @click="showHome = !showHome" />
-            <h4 v-if="showHome" style="margin-top: 8px; color: #ffff;">Home</h4>
+            <h4 v-if="showHome" style="margin-top: 8px; color: #ffff;"></h4>
           </div>
 
           <div class="check">
