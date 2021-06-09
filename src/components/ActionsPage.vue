@@ -1,40 +1,62 @@
 <template>
   <div class="ActionsPage">
     <a
-      ><h3 style="color: red; front-size: 40vw; text-align: center;">
+      ><h3
+        style="color: red; front-size: 40vw; text-align: center; margin-top: 3%;"
+      >
         דוח פעילויות
       </h3></a
     >
-    <button
+    <!-- <button
       style="color:white;  background-color: #118ab2; text-align: right; margin-left: 70vw;"
     >
       <a style-="front-size: 20vw;">סינון </a>
-    </button>
-    <div class="window">
+    </button> -->
+    <select
+      v-model="idk"
+      style="background-color: gray; text-align: right; margin-left: 70vw;"
+    >
+      <option disabled value="">Please select one</option>
+      <option>הכל</option>
+      <option>הסתיים</option>
+      <option>מתוכנן</option>
+      <option>פעיל</option>
+    </select>
+    <select
+      v-model="idk2"
+      style="background-color: gray; text-align: right; margin-left: 20vw;"
+    >
+      <option disabled value="">Please select one</option>
+      <option>הכל</option>
+      <option>מארב</option>
+      <option>פטרול</option>
+      <option>מחסום מכוניות</option>
+    </select>
+    <div class="window" style="margin-top: 3%">
       <button
         class="roww"
-        v-for="(action, key) in allActivities"
+        v-for="(action, key) in filterByStatus()"
         :key="key"
         v-on:click="
           openModal(action);
           addActCops(action.id);
         "
       >
-        <a class="insideButton">
+        <a style="float:right;">
           {{ action.description }}
         </a>
-        <a>
+        <a style="float: left;">
           {{ action.date }}
         </a>
       </button>
-      <button
-        style="background-color: #1b98e0"
-        class="nextP"
-        v-on:click="openModal2()"
-      >
-        <i class="fas fa-plus fa-3x"></i>
-      </button>
     </div>
+    <button
+      style="background-color: #1b98e0; margin-left: 10%;"
+      class="nextP"
+      v-on:click="openModal2()"
+    >
+      <i class="fas fa-plus fa-3x"></i>
+    </button>
 
     <transition name="fade">
       <div class="modal" v-if="show">
@@ -60,8 +82,60 @@
             <h2>מטרת הפעילות: {{ currentAction.description }}</h2>
             <h2>אישור הפעילות: {{ currentAction.approved }}</h2>
             <h2>מיקום: {{ currentAction.location }}</h2>
+            <button
+              class="omri"
+              style="background-color: green;"
+              v-on:click="
+                changeStatus(currentAction.id, 1);
+                closeModal();
+                openModal3();
+              "
+            >
+              הוצא פעולה !
+            </button>
+            <button
+              class="omri"
+              style="background-color: red;"
+              v-on:click="
+                changeStatus(currentAction.id, 3);
+                closeModal();
+                openModal3();
+              "
+            >
+              סיים פעולה !
+            </button>
             <slot name="body" />
           </div>
+
+          <div class="modal__footer">
+            <slot name="footer" />
+          </div>
+        </div>
+      </div>
+    </transition>
+
+    <transition name="fade">
+      <div class="modal" v-if="show3">
+        <div class="modal__backdrop" @click="closeModal3()" />
+        <div>
+          <img
+            src="https://media1.giphy.com/media/Wozl9UAP6DG9vOotl8/giphy.gif?cid=ecf05e476xpgl8lyvuz5vjwdseufm0150kuzujs5eonlq9n4&rid=giphy.gif&ct=g"
+            style="width:70%; height: auto; margin-left: 14%; margin-top: 3%"
+          />
+          <div class="modal__header">
+            <h1 style="color: red;"></h1>
+            <slot name="header" />
+            <button type="button" class="modal__close" @click="closeModal3()">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512">
+                <path
+                  fill="currentColor"
+                  d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"
+                ></path>
+              </svg>
+            </button>
+          </div>
+
+          <div class="modal__body"></div>
 
           <div class="modal__footer">
             <slot name="footer" />
@@ -220,8 +294,11 @@ export default {
       target: "",
       power: "",
       time: "",
+      idk: "",
+      idk2: "",
       show: false,
       show2: false,
+      show3: false,
       currentAction: null,
       allActivities: null,
       allUsers: null,
@@ -251,9 +328,6 @@ export default {
         throw e;
       });
 
-    console.log(this.allActivities);
-    console.log(1);
-
     await axios
       .get("http://localhost:8081/activities/users")
       .then(response => {
@@ -266,7 +340,6 @@ export default {
     await axios
       .get("http://localhost:8081/activities/cops")
       .then(response => {
-        console.log(response.data);
         this.allCops = response.data.map(cop => ({
           name: cop.cop_name,
           id: cop.cop,
@@ -278,15 +351,56 @@ export default {
       });
 
     this.changeDates();
-    console.log(this.allActivities);
   },
   methods: {
     closeModal() {
       this.show = false;
       document.querySelector("body").classList.remove("overflow-hidden");
     },
+    async changeStatus(id, status) {
+      console.log(id);
+      await axios.put("http://localhost:8081/activities/changeStatus", {
+        id: id,
+        theStatus: status
+      });
+    },
+
+    filterByStatus() {
+      // if (this.allActivities) {
+      //   this.allActivities.sort(function(a, b) {
+      //     return new Date(b.date) - new Date(a.date);
+      //   });
+      // }
+      if (
+        (this.idk === "" && this.idk2 === "") ||
+        (this.idk === "הכל" && this.idk2 === "הכל") ||
+        (this.idk === "" && this.idk2 === "הכל") ||
+        (this.idk2 === "" && this.idk === "הכל")
+      ) {
+        return this.allActivities;
+      }
+
+      if (this.idk === "הכל" && this.idk2 !== "הכל") {
+        return this.allActivities.filter(
+          activity => activity.activity_type === this.idk2
+        );
+      }
+
+      if (this.idk !== "הכל" && this.idk2 === "הכל") {
+        return this.allActivities.filter(
+          activity => activity.activity_status === this.idk
+        );
+      }
+
+      return this.allActivities.filter(
+        activity =>
+          activity.activity_status === this.idk &&
+          activity.activity_type === this.idk2
+      );
+    },
     openModal(theDude) {
       this.currentAction = theDude;
+      console.log(this.currentAction);
       this.show = true;
       document.querySelector("body").classList.add("overflow-hidden");
     },
@@ -305,20 +419,24 @@ export default {
       this.show2 = true;
       document.querySelector("body").classList.add("overflow-hidden");
     },
+    openModal3() {
+      this.show3 = true;
+      document.querySelector("body").classList.add("overflow-hidden");
+    },
+    closeModal3() {
+      this.show3 = false;
+      document.querySelector("body").classList.add("overflow-hidden");
+    },
     changeDates() {
       var format = "YYYY-MM-DD";
       this.allActivities.forEach(element => {
         var newDate = new Date(element.date);
         element.date = moment(newDate).format(format);
-        console.log(element.date);
       });
     },
     addActCops(id) {
-      console.log(id);
       this.currentActivityCops = [];
       this.allCops.forEach(element2 => {
-        console.log(element2.activity);
-        console.log(element2.name);
         if (id == element2.activity) {
           this.currentActivityCops.push(element2.name);
         }
@@ -366,7 +484,17 @@ export default {
 <style>
 .roww {
   width: 100%;
-  background-color: #1b98e0;
+  background-color: #80c5a0;
+  height: 100px;
+  text-align: right;
+  direction: rtl;
+  border-radius: 30px;
+  border-style: inset;
+  /* margin-left: 10%; */
+}
+
+.roww:hover {
+  background-color: #caf0f8;
 }
 
 .multiselect {
@@ -382,6 +510,9 @@ export default {
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
+  width: 50%;
+  flex: center;
+  justify-content: center;
 }
 
 .window {
@@ -389,7 +520,9 @@ export default {
   height: 46vh;
   width: 71%;
   margin-left: 10%;
+  overflow: auto;
 }
+
 .modal {
   overflow-x: hidden;
   overflow-y: auto;
@@ -412,7 +545,8 @@ export default {
 .modal__dialog {
   background-color: #ffffff;
   position: relative;
-  width: 80vw;
+  width: 50vw;
+  margin-top: 30%;
   margin: 50px auto;
   display: flex;
   flex-direction: column;

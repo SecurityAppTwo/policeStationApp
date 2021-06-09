@@ -64,7 +64,6 @@ export default {
 #app {
   /* background-image: url("https://i.pinimg.com/564x/2d/4e/f0/2d4ef0d384578ee83ccd92967f1db160.jpg");  */
 }
-
 a {
   font-size: 3vw;
 }
