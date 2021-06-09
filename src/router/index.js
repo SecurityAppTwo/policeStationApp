@@ -1,6 +1,7 @@
 import ActionsPage from "@/components/ActionsPage";
 import LoginPage from "@/components/LoginPage";
 import MapPage from "@/components/MapPage";
+import ReportsPage from "@/components/ReportsPage";
 
 export default [
   {
@@ -14,7 +15,9 @@ export default [
   {
     path: "/MapPage",
     component: MapPage
+  },
+  {
+    path: "/ReportsPage",
+    component: ReportsPage
   }
 ];
-
-// export default router;
