@@ -85,7 +85,7 @@ export default {
   },
   async created() {
     await axios
-      .get("http://localhost:8080/reports/allEventsReported")
+      .get("http://localhost:8081/reports/allEventsReported")
       .then(response => {
         this.allReports = response.data;
       })
@@ -95,7 +95,7 @@ export default {
       });
 
     await axios
-      .get("http://localhost:8080/reports/usersNameReports")
+      .get("http://localhost:8081/reports/usersNameReports")
       .then(response => {
         this.allUsersReports = response.data;
       })
