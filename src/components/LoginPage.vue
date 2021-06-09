@@ -17,7 +17,7 @@
       />
       <input
         class="password"
-        type="text"
+        type="password"
         name="username"
         v-model="input.password"
         placeholder="סיסמה"
