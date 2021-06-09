@@ -194,7 +194,7 @@ ul {
 .modal__body {
   font-family: Arial, Helvetica, sans-serif;
   border-radius: 15px 50px;
-  background-color: #6495ed;
+  background-color: #33415c;
   color: white;
 }
 
