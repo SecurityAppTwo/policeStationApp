@@ -1,7 +1,10 @@
 <template>
   <div class="reportPage">
     <a
-      ><h3 style="color: #6495ed; front-size: 40vw; text-align: center;">
+      ><h3
+        class="lastReports"
+        style="color: white; front-size: 30vw; text-align: center;"
+      >
         דיווחים אחרונים
       </h3></a
     >
@@ -162,6 +165,10 @@ export default {
   background-color: #6495ed;
   height: 100%;
   font-weight: bold;
+}
+
+.lastReports {
+  color: #6495ed !important;
 }
 
 li {
