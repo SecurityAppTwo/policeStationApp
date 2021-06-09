@@ -66,7 +66,7 @@ export default {
 .navbar {
   width: 100%;
   height: 60px;
-  background-color: black;
+  background-color: orange;
   bottom: 100;
   box-shadow: 0.1px 0.1px 15px 0.1px #273c75;
   display: flex;

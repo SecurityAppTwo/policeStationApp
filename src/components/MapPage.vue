@@ -12,7 +12,7 @@
         <iframe
           :src="`http://alpha-maps-git-tmzmap2.apps.openforce.openforce.biz/`"
           width="100%"
-          height="100"
+          height="140%"
           frameborder="0"
         >
         </iframe>
@@ -34,17 +34,23 @@ export default {
 
 <style>
 .map {
-  margin-top: 150px;
+  /* margin-top: 20px; */
   margin-bottom: 200px;
+  margin-left: 100px;
+  padding: 70px;
   width: 80vw;
-  height: 40vh;
+  height: 45vh;
   display: flex;
   justify-content: center;
+  
 }
 
 .title {
   display: flex;
   justify-content: center;
-  margin-top: 80px;
+  margin-top: 60px;
+  color: white;
+  font-weight: bold;
+  font-size: 200%;
 }
 </style>
