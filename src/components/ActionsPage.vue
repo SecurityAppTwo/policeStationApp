@@ -363,20 +363,31 @@ export default {
         id: id,
         theStatus: status
       });
+
+      await axios
+        .get("http://localhost:8081/activities/all")
+        .then(response => {
+          this.allActivities = response.data;
+        })
+        .catch(e => {
+          throw e;
+        });
+      this.changeDates();
     },
 
     filterByStatus() {
+      if (this.idk === "") {
+        this.idk = "הכל";
+      }
+      if (this.idk2 === "") {
+        this.idk2 = "הכל";
+      }
       // if (this.allActivities) {
       //   this.allActivities.sort(function(a, b) {
       //     return new Date(b.date) - new Date(a.date);
       //   });
       // }
-      if (
-        (this.idk === "" && this.idk2 === "") ||
-        (this.idk === "הכל" && this.idk2 === "הכל") ||
-        (this.idk === "" && this.idk2 === "הכל") ||
-        (this.idk2 === "" && this.idk === "הכל")
-      ) {
+      if (this.idk === "הכל" && this.idk2 === "הכל") {
         return this.allActivities;
       }
 
