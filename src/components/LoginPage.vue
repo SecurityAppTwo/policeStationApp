@@ -24,9 +24,8 @@
       />
       <button class="loginButton" type="button" @click="login()">
         התחברות
-        <router-link to="/ActionsPage"> </router-link>
       </button>
-      <p v-if="!user">
+      <p v-if="!confirmed">
         משתמש לא קיים
       </p>
     </body>
@@ -45,9 +44,7 @@ export default {
         username: "",
         password: ""
       },
-      user: {}
-      //   confirmed: true,
-      //   move: false
+      confirmed: true
     };
   },
   methods: {
@@ -57,12 +54,15 @@ export default {
           `http://localhost:8081/users/validateUser?username=${this.input.username}&password=${this.input.password}`
         )
         .then(response => {
-          this.user = response.data;
+          if (response.data.isValid) {
+            this.$router.push("/ActionsPage");
+          } else {
+            this.confirmed = false;
+          }
         })
         .catch(e => {
           throw e;
         });
-      return this.user;
     }
   }
 };

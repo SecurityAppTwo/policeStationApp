@@ -1,5 +1,6 @@
 import ActionsPage from "@/components/ActionsPage";
 import LoginPage from "@/components/LoginPage";
+import MapPage from "@/components/MapPage";
 
 export default [
   {
@@ -9,6 +10,10 @@ export default [
   {
     path: "/",
     component: LoginPage
+  },
+  {
+    path: "/MapPage",
+    component: MapPage
   }
 ];
 

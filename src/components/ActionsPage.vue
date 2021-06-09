@@ -1,190 +1,189 @@
 <template>
-  <div class="ActionsPage">
+  <div>
     <Navbar></Navbar>
-    <a
-      ><h3 style="color: red; front-size: 40vw; text-align: center;">
-        דוח פעילויות
-      </h3></a
-    >
-    <button
-      style="color:white;  background-color: #118ab2; text-align: right; margin-left: 70vw;"
-    >
-      <a style-="front-size: 20vw;">סינון </a>
-    </button>
-    <div class="window">
-      <button
-        class="roww"
-        v-for="(action, key) in allActivities"
-        :key="key"
-        v-on:click="
-          openModal(action);
-          addActCops(action.id);
-        "
+    <div class="ActionsPage">
+      <a
+        ><h3 style="color: red; front-size: 40vw; text-align: center;">
+          דוח פעילויות
+        </h3></a
       >
-        <a class="insideButton">
-          {{ action.description }}
-        </a>
-        <a>
-          {{ action.date }}
-        </a>
-      </button>
       <button
-        style="background-color: #1b98e0"
-        class="nextP"
-        v-on:click="openModal2()"
+        style="color:white;  background-color: #118ab2; text-align: right; margin-left: 70vw;"
       >
-        <i class="fas fa-plus fa-3x"></i>
+        <a style-="front-size: 20vw;">סינון </a>
       </button>
+      <div class="window">
+        <button
+          class="roww"
+          v-for="(action, key) in allActivities"
+          :key="key"
+          v-on:click="
+            openModal(action);
+            addActCops(action.id);
+          "
+        >
+          <a class="insideButton">
+            {{ action.description }}
+          </a>
+          <a>
+            {{ action.date }}
+          </a>
+        </button>
+        <button
+          style="background-color: #1b98e0"
+          class="nextP"
+          v-on:click="openModal2()"
+        >
+          <i class="fas fa-plus fa-3x"></i>
+        </button>
+      </div>
+
+      <transition name="fade">
+        <div class="modal" v-if="show">
+          <div class="modal__backdrop" @click="closeModal()" />
+
+          <div class="modal__dialog">
+            <div class="modal__header">
+              <slot name="header" />
+              <button type="button" class="modal__close" @click="closeModal()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512">
+                  <path
+                    fill="currentColor"
+                    d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+
+            <div class="modal__body">
+              <h2>סוג פעולה: {{ currentAction.activity_type }}</h2>
+              <h2>זמן מתוכנן לפעילות: {{ currentAction.date }}</h2>
+              <h2>כוח מתוכנן: {{ currentActivityCops }}</h2>
+              <h2>מטרת הפעילות: {{ currentAction.description }}</h2>
+              <h2>אישור הפעילות: {{ currentAction.approved }}</h2>
+              <h2>מיקום: {{ currentAction.location }}</h2>
+              <slot name="body" />
+            </div>
+
+            <div class="modal__footer">
+              <slot name="footer" />
+            </div>
+          </div>
+        </div>
+      </transition>
+
+      <transition name="fade">
+        <div class="modal" v-if="show2">
+          <div class="modal__backdrop" @click="closeModal2()" />
+
+          <div class="modal__dialog">
+            <div class="modal__header">
+              <h1 style="color: red;">
+                פעילות חדשה
+              </h1>
+              <slot name="header" />
+              <button type="button" class="modal__close" @click="closeModal2()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512">
+                  <path
+                    fill="currentColor"
+                    d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+
+            <div class="modal__body">
+              <div>
+                <input
+                  type="text"
+                  id="location"
+                  name="location"
+                  v-model="description"
+                  placeholder="מיקום.."
+                />
+                <label for="fname">תיאור</label>
+              </div>
+              <div>
+                <input
+                  type="text"
+                  id="kind"
+                  name="kind"
+                  v-model="kind"
+                  placeholder="סוג הפעולה.."
+                />
+                <label for="fname">סוג הפעולה</label>
+              </div>
+              <div>
+                <input
+                  type="text"
+                  id="time"
+                  name="time"
+                  v-model="time"
+                  placeholder="זמן מתכונן.."
+                />
+                <label for="fname">זמן מתוכנן לפעילות</label>
+              </div>
+              <div>
+                <input
+                  type="text"
+                  id="force"
+                  name="force"
+                  v-model="force"
+                  placeholder="כוח מתוכנן.."
+                />
+
+                <label for="fname">כוח מתוכנן</label>
+              </div>
+              <div>
+                <input
+                  type="text"
+                  id="target"
+                  name="target"
+                  v-model="target"
+                  placeholder="מטרת הפעילות.."
+                />
+                <label for="fname">מטרת הפעילות</label>
+              </div>
+              <div>
+                <input
+                  type="text"
+                  id="approve"
+                  name="approve"
+                  v-model="approve"
+                  placeholder="אישור הפעילות.."
+                />
+                <label for="fname">אישור הפעילות</label>
+              </div>
+              <div>
+                <input
+                  type="text"
+                  id="location"
+                  name="location"
+                  v-model="location"
+                  placeholder="מיקום.."
+                />
+                <label for="fname">מיקום</label>
+              </div>
+              <button
+                class="omri"
+                style="background-color: green;"
+                v-on:click="
+                  addAction();
+                  closeModal2();
+                "
+              >
+                יצירת פעולה
+              </button>
+              <slot name="body" />
+            </div>
+
+            <div class="modal__footer">
+              <slot name="footer" />
+            </div>
+          </div>
+        </div>
+      </transition>
     </div>
-
-    <transition name="fade">
-      <div class="modal" v-if="show">
-        <div class="modal__backdrop" @click="closeModal()" />
-
-        <div class="modal__dialog">
-          <div class="modal__header">
-            <slot name="header" />
-            <button type="button" class="modal__close" @click="closeModal()">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512">
-                <path
-                  fill="currentColor"
-                  d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"
-                ></path>
-              </svg>
-            </button>
-          </div>
-
-          <div class="modal__body">
-            <h2>סוג פעולה: {{ currentAction.activity_type }}</h2>
-            <h2>זמן מתוכנן לפעילות: {{ currentAction.date }}</h2>
-            <h2>כוח מתוכנן: {{ currentActivityCops }}</h2>
-            <h2>מטרת הפעילות: {{ currentAction.description }}</h2>
-            <h2>אישור הפעילות: {{ currentAction.approved }}</h2>
-            <h2>מיקום: {{ currentAction.location }}</h2>
-            <slot name="body" />
-          </div>
-
-          <div class="modal__footer">
-            <slot name="footer" />
-          </div>
-        </div>
-      </div>
-    </transition>
-
-    <transition name="fade">
-      <div class="modal" v-if="show2">
-        <div class="modal__backdrop" @click="closeModal2()" />
-
-        <div class="modal__dialog">
-          <div class="modal__header">
-            <h1 style="color: red;">
-              פעילות חדשה
-            </h1>
-            <slot name="header" />
-            <button type="button" class="modal__close" @click="closeModal2()">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512">
-                <path
-                  fill="currentColor"
-                  d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"
-                ></path>
-              </svg>
-            </button>
-          </div>
-
-          <div class="modal__body">
-            <div>
-              <input
-                type="text"
-                id="location"
-                name="location"
-                v-model="description"
-                placeholder="מיקום.."
-              />
-              <label for="fname">תיאור</label>
-            </div>
-            <div>
-              <input
-                type="text"
-                id="kind"
-                name="kind"
-                v-model="kind"
-                placeholder="סוג הפעולה.."
-              />
-              <label for="fname">סוג הפעולה</label>
-            </div>
-            <div>
-              <input
-                type="text"
-                id="time"
-                name="time"
-                v-model="time"
-                placeholder="זמן מתכונן.."
-              />
-              <label for="fname">זמן מתוכנן לפעילות</label>
-            </div>
-            <div>
-              <input
-                type="text"
-                id="force"
-                name="force"
-                v-model="force"
-                placeholder="כוח מתוכנן.."
-              />
-              <!-- <multiselect
-                v-model="value"
-                :options="this.allCops"
-              ></multiselect> -->
-              <label for="fname">כוח מתוכנן</label>
-            </div>
-            <div>
-              <input
-                type="text"
-                id="target"
-                name="target"
-                v-model="target"
-                placeholder="מטרת הפעילות.."
-              />
-              <label for="fname">מטרת הפעילות</label>
-            </div>
-            <div>
-              <input
-                type="text"
-                id="approve"
-                name="approve"
-                v-model="approve"
-                placeholder="אישור הפעילות.."
-              />
-              <label for="fname">אישור הפעילות</label>
-            </div>
-            <div>
-              <input
-                type="text"
-                id="location"
-                name="location"
-                v-model="location"
-                placeholder="מיקום.."
-              />
-              <label for="fname">מיקום</label>
-            </div>
-            <button
-              class="omri"
-              style="background-color: green;"
-              v-on:click="
-                addAction();
-                closeModal2();
-              "
-            >
-              יצירת פעולה
-            </button>
-            <slot name="body" />
-          </div>
-
-          <div class="modal__footer">
-            <slot name="footer" />
-          </div>
-        </div>
-      </div>
-    </transition>
   </div>
 </template>
 
@@ -192,7 +191,6 @@
 const moment = require("moment");
 import axios from "axios";
 import Navbar from "./Navbar";
-// import Multiselect from "vue-multiselect";
 
 export default {
   name: "actionsPage",
@@ -309,9 +307,6 @@ export default {
   background-color: #1b98e0;
 }
 
-.nextP {
-}
-
 .omri {
   background-color: #4caf50; /* Green */
   border: none;
@@ -325,10 +320,15 @@ export default {
 
 .window {
   background-color: #b4c5e4;
-  height: 46vh;
-  width: 71%;
+  top: 20%;
+  height: 100vh;
+  width: 74%;
   margin-left: 10%;
+  padding-top: 80px;
+  padding-left: 50px;
+  padding-right: 50px;
 }
+
 .modal {
   overflow-x: hidden;
   overflow-y: auto;
