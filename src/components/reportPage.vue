@@ -1,24 +1,26 @@
 <template>
   <div class="reportPage">
     <a
-      ><h3 style="color: #191970; front-size: 40vw; text-align: center;">
+      ><h3 style="color: #6495ed; front-size: 40vw; text-align: center;">
         דיווחים אחרונים
       </h3></a
     >
 
     <div class="window">
-      <button class="roww" dir="rtl">
-        <ul v-for="(reports, key) in allReports" :key="key">
-          <li
-            v-for="(report, index) in reports"
-            :key="index"
-            v-on:click="openModal(report)"
-          >
-            {{ report.type }} <br />
-            {{ report.date }}
-          </li>
-        </ul>
-      </button>
+      <div>
+        <button class="roww" dir="rtl" style="border: none">
+          <ul v-for="(reports, key) in allReports" :key="key">
+            <li
+              v-for="(report, index) in reports"
+              :key="index"
+              v-on:click="openModal(report)"
+            >
+              {{ report.type }} <br />
+              {{ report.date }}
+            </li>
+          </ul>
+        </button>
+      </div>
     </div>
 
     <transition name="fade">
@@ -36,6 +38,9 @@
                 ></path>
               </svg>
             </button>
+            <div class="modal_title d-flex justify-content-center">
+              פרטים נוספים
+            </div>
           </div>
 
           <div class="modal__body">
@@ -66,9 +71,9 @@ export default {
       show: false,
       show2: false,
       allReports: null,
-
       currentActivityCops: [],
-      currentReport: {}
+      currentReport: {},
+      allUsersReports: null
     };
   },
   async created() {
@@ -76,12 +81,23 @@ export default {
       .get("http://localhost:8080/reports/allEventsReported")
       .then(response => {
         this.allReports = response.data;
-        console.log(this.allReports);
-        // console.log(this.allReports[0][0].date);
       })
       .catch(e => {
         console.log("An error occurred: " + e.message);
         throw e;
+      });
+
+    await axios
+      .get("http://localhost:8080/reports/usersNameReports")
+      .then(response => {
+        this.allUsersReports = response.data;
+      })
+      .catch(err => {
+        console.log(
+          "An error occurred while getting users reports from server: " +
+            err.message
+        );
+        throw err;
       });
 
     this.changeDates();
@@ -93,7 +109,17 @@ export default {
     },
     openModal(theDude) {
       this.currentReport = theDude;
-      console.log(this.currentReport);
+      delete this.currentReport.id;
+
+      this.allUsersReports.forEach(users => {
+        users.forEach(user => {
+          if (user.id === this.currentReport.reported_by) {
+            this.currentReport["user name"] = user.name;
+          }
+        });
+      });
+
+      delete this.currentReport.reported_by;
       this.show = true;
       document.querySelector("body").classList.add("overflow-hidden");
     },
@@ -115,17 +141,14 @@ export default {
     changeDates() {
       var format = "DD/MM/YYYY hh:mm";
       this.allReports.forEach(events => {
-        events.forEach((report, index) => {
+        events.forEach(report => {
           var newDate = new Date(report.date);
           report.date = moment(newDate).format(format);
-          console.log("index: " + index);
+
           if (report.type === "חטיפה" || report.type === "תאונה") {
-            console.log("enter here");
             var newReportDate = new Date(report.report_date);
             report.report_date = moment(newReportDate).format(format);
-            console.log("report date: " + report.report_date);
           }
-          console.log(report.date);
         });
       });
     }
@@ -136,8 +159,9 @@ export default {
 <style>
 .roww {
   width: 100%;
-  background-color: #d4dcf2;
+  background-color: #6495ed;
   height: 100%;
+  font-weight: bold;
 }
 
 li {
@@ -146,6 +170,21 @@ li {
 
 ul {
   list-style: none;
+}
+
+.modal_title {
+  text-align: center;
+  font-size: large;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  color: #6495ed;
+}
+
+.modal__body {
+  font-family: Arial, Helvetica, sans-serif;
+  border-radius: 15px 50px;
+  background-color: #6495ed;
+  color: white;
 }
 
 .nextP {
@@ -163,10 +202,15 @@ ul {
 }
 
 .window {
-  background-color: #d4dcf2;
+  display: flex;
+  justify-content: center;
+  background-color: #6495ed;
   height: 46vh;
   width: 71%;
   margin-left: 10%;
+  overflow: auto;
+  border-radius: 15px 50px;
+  border: 0px;
 }
 .modal {
   overflow-x: hidden;

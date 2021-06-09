@@ -1,5 +1,5 @@
 <template>
-  <div id="app" style="background-color: #daedf4; height: 100vh;">
+  <div id="app" style="height: 100vh;" class="appPage">
     <div class="row">
       <div class="col">
         <button class="center">
@@ -66,6 +66,10 @@ export default {
   /* ======= */
   /* background-image: url("https://i.pinimg.com/564x/2d/4e/f0/2d4ef0d384578ee83ccd92967f1db160.jpg");  */
   /* >>>>>>> 11281b5d60749b22fd8f6e97c436f96c6a2dbabb */
+}
+
+.appPage {
+  background-color: #ccf2ff;
 }
 
 a {
