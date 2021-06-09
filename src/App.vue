@@ -1,14 +1,6 @@
-Skip to content Search or jump to… Pull requests Issues Marketplace Explore
-@mayarub SecurityAppTwo / policeStationApp 0 0 0 Code Issues Pull requests
-Actions Projects Wiki Security 1 Insights Settings policeStationApp/src/App.vue
-hackathon IDF changed styles and db connection Latest commit 11281b5 8 hours ago
-History 0 contributors We found potential security vulnerabilities in your
-dependencies. You can see this message because you have been granted access to
-Dependabot alerts for this repository. 99 lines (91 sloc) 1.96 KB
-
 <template>
-  <div id="app" style="background-color: #caf0f8; height: 100vh;">
-    <div class="row">
+  <div id="app" style="height: 100vh;">
+    <!-- <div class="row">
       <div class="col">
         <button class="center">
           <a>
@@ -42,7 +34,10 @@ Dependabot alerts for this repository. 99 lines (91 sloc) 1.96 KB
           class="fas fa-broadcast-tower fa-7x  "
         ></i>
       </div>
-    </div>
+    </div> -->
+    <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+      <a class="navbar-brand" href="#">Navbar</a>
+    </nav>
     <map-page />
   </div>
 </template>
@@ -70,8 +65,9 @@ export default {
 
 <style>
 #app {
-  /* background-image: url("https://i.pinimg.com/564x/2d/4e/f0/2d4ef0d384578ee83ccd92967f1db160.jpg");  */
+  background-color: black !important;
 }
+
 a {
   font-size: 3vw;
 }
