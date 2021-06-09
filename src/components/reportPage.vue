@@ -39,14 +39,8 @@
           </div>
 
           <div class="modal__body">
-            <!-- <h2>סוג אירוע: {{ currentReport.type }}</h2>
-            <h2>סוג נשק: {{ currentReport.weapon_type }}</h2>
-            <h2>נפגעים: {{ currentReport.injured_count }}</h2>
-            <h2>זמן האירוע: {{ currentReport.date }}</h2>
-            <h2>זמן הדיווח: {{ currentReport.reported_date }}</h2>
-            <h2>זהות המדווח: {{ currentReport.reported_by }}</h2> -->
-            <div v-for="report in currentReport" :key="report">
-              {{ report }} : {{}}
+            <div v-for="(report, index) in currentReport" :key="report">
+              {{ report }} : {{ index }}
             </div>
             <slot name="body" />
           </div>
@@ -121,9 +115,16 @@ export default {
     changeDates() {
       var format = "DD/MM/YYYY hh:mm";
       this.allReports.forEach(events => {
-        events.forEach(report => {
+        events.forEach((report, index) => {
           var newDate = new Date(report.date);
           report.date = moment(newDate).format(format);
+          console.log("index: " + index);
+          if (report.type === "חטיפה" || report.type === "תאונה") {
+            console.log("enter here");
+            var newReportDate = new Date(report.report_date);
+            report.report_date = moment(newReportDate).format(format);
+            console.log("report date: " + report.report_date);
+          }
           console.log(report.date);
         });
       });
