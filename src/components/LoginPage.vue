@@ -22,11 +22,11 @@
         v-model="input.password"
         placeholder="סיסמה"
       />
-      <router-link to="/ActionPage" v-if="move"> </router-link>
       <button class="loginButton" type="button" @click="login()">
         התחברות
+        <router-link to="/ActionsPage"> </router-link>
       </button>
-      <p v-if="!confirmed">
+      <p v-if="!user">
         משתמש לא קיים
       </p>
     </body>
@@ -45,9 +45,9 @@ export default {
         username: "",
         password: ""
       },
-      user: null,
-      confirmed: true,
-      move: false
+      user: {}
+      //   confirmed: true,
+      //   move: false
     };
   },
   methods: {
@@ -62,12 +62,7 @@ export default {
         .catch(e => {
           throw e;
         });
-      if (this.user) {
-        this.move = true;
-        this.$router.push("/ActionsPage");
-      } else {
-        this.confirmed = false;
-      }
+      return this.user;
     }
   }
 };

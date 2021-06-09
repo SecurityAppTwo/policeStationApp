@@ -38,17 +38,16 @@
         ></i>
       </div>
     </div>
-    <LoginPage />
   </div>
 </template>
 
 <script>
-import LoginPage from "@/components/LoginPage.vue";
+// import LoginPage from "@/components/LoginPage.vue";
 
 export default {
   name: "App",
   components: {
-    LoginPage
+    // LoginPage
   },
   data() {
     return {
