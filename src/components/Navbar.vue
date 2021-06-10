@@ -17,18 +17,37 @@
           </div>
 
           <div class="check">
-            <img src="./../assets/5.jpg" @click="moveToActions" />
-            <h4 v-if="showCheck" style="margin-top: 8px; color: #ffff;"></h4>
+            <img
+              src="./../assets/7.png"
+              @click="moveToActions"
+              @mouseover="showCheck = !showCheck"
+              @mouseout="showCheck = !showCheck"
+            />
+            <h4 v-if="showCheck" style="margin-top: 8px; color: #ffff;">
+              פעילויות
+            </h4>
           </div>
 
           <div class="coin">
-            <img src="./../assets/2.png" @click="moveToMap" />
-            <h4 v-if="showCoin" style="margin-top: 8px; color: #ffff;"></h4>
+            <img
+              src="./../assets/2.png"
+              @click="moveToMap"
+              @mouseover="showCoin = !showCoin"
+              @mouseout="showCoin = !showCoin"
+            />
+            <h4 v-if="showCoin" style="margin-top: 8px; color: #ffff;">מפה</h4>
           </div>
 
           <div class="user">
-            <img src="./../assets/3.png" @click="moveToReports" />
-            <h4 v-if="showUser" style="margin-top: 8px; color: #ffff;"></h4>
+            <img
+              src="./../assets/6.png"
+              @click="moveToReports"
+              @mouseover="showUser = !showUser"
+              @mouseout="showUser = !showUser"
+            />
+            <h4 v-if="showUser" style="margin-top: 8px; color: #ffff;">
+              דיווחים
+            </h4>
           </div>
         </div>
       </div>
