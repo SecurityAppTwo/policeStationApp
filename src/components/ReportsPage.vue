@@ -2,27 +2,24 @@
   <div class="reportPage">
     <Navbar></Navbar>
     <a
-      ><h3
-        class="lastReports"
-        style="color: white; front-size: 30vw; text-align: center;"
-      >
+      ><h3 class="lastReports" style="text-align: center;">
         דיווחים אחרונים
       </h3></a
     >
 
-    <div class="window">
+    <div class="window" style="border-color: orange">
       <div>
-        <button class="roww" dir="rtl" style="border: none">
-          <ul v-for="(reports, key) in allReports" :key="key">
-            <li
+        <button class="rowWindow ">
+          <div v-for="(reports, key) in allReports" :key="key">
+            <div
               v-for="(report, index) in reports"
               :key="index"
               v-on:click="openModal(report)"
             >
-              {{ report.type }} <br />
+              {{ report.type }}
               {{ report.date }}
-            </li>
-          </ul>
+            </div>
+          </div>
         </button>
       </div>
     </div>
@@ -31,7 +28,7 @@
       <div class="modal" v-if="show">
         <div class="modal__backdrop" @click="closeModal()" />
 
-        <div class="modal__dialog">
+        <div class="modal__dialog" style="background-color: #001233">
           <div class="modal__header">
             <slot name="header" />
             <button type="button" class="modal__close" @click="closeModal()">
@@ -164,15 +161,25 @@ export default {
 </script>
 
 <style>
-.roww {
+.rowWindow {
+  display: flex;
+  justify-content: space-between;
   width: 100%;
-  background-color: #6495ed;
+  background-color: #5c677d;
   height: 100%;
   font-weight: bold;
+  font-size: 170%;
+  color: orange;
+  border: none;
 }
 
 .lastReports {
-  color: #6495ed !important;
+  display: flex;
+  justify-content: center;
+  margin-top: 100px;
+  color: white;
+  font-weight: bold;
+  font-size: 200%;
 }
 
 li {
@@ -185,17 +192,19 @@ ul {
 
 .modal_title {
   text-align: center;
-  font-size: large;
+  font-size: 180%;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
-  color: #6495ed;
+  color: #e6f9ff;
 }
 
 .modal__body {
+  text-align: center;
   font-family: Arial, Helvetica, sans-serif;
   border-radius: 15px 50px;
-  background-color: #33415c;
-  color: white;
+  /* background-color: #5c677d; */
+  color: #e6f9ff;
+  font-size: 130%;
 }
 
 .nextP {
@@ -215,14 +224,20 @@ ul {
 .window {
   display: flex;
   justify-content: center;
-  background-color: #6495ed;
-  height: 46vh;
-  width: 71%;
-  margin-left: 10%;
+  background-color: #5c677d;
+  height: 35vh;
+  width: 60%;
   overflow: auto;
   border-radius: 15px 50px;
   border: 0px;
+  margin-top: 130px;
+  margin-bottom: 200px;
+  margin-left: 300px;
+  padding: 70px;
+  border-color: orange;
+  box-shadow: 4px 2px 4px 2px orange;
 }
+
 .modal {
   overflow-x: hidden;
   overflow-y: auto;
@@ -251,6 +266,7 @@ ul {
   flex-direction: column;
   border-radius: 5px;
   z-index: 2;
+  border-radius: 15px 50px 30px;
 }
 .modal__close {
   width: 30px;
