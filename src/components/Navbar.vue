@@ -51,12 +51,15 @@ export default {
   methods: {
     moveToMap() {
       this.$router.push("/MapPage");
+      this.$router.go();
     },
     moveToActions() {
       this.$router.push("/ActionsPage");
+      this.$router.go();
     },
     moveToReports() {
       this.$router.push("/ReportsPage");
+      this.$router.go();
     }
   }
 };
@@ -66,9 +69,9 @@ export default {
 .navbar {
   width: 100%;
   height: 60px;
-  background-color: black;
+  background-color: orange;
   bottom: 100;
-  box-shadow: 0.1px 0.1px 15px 0.1px #273c75;
+  box-shadow: 0.1px 0.1px 15px 0.1px #023e7d;
   display: flex;
 }
 #home {
