@@ -5,16 +5,9 @@
 </template>
 
 <script>
-// import LoginPage from "./components/LoginPage.vue";
-// import ActionsPage from "./components/ActionsPage.vue";
-// import Navbar from "./components/Navbar.vue";
-
 export default {
   name: "App",
-  components: {
-    // Navbar
-    // LoginPage
-  },
+  components: {},
   data() {
     return {};
   }
