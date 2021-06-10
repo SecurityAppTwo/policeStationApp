@@ -2,15 +2,15 @@
   <div class="ActionsPage">
     <Navbar></Navbar>
     <a
-      ><h3
-        style="color: red; front-size: 40vw; text-align: center; margin-top: 3%;"
+      ><h1
+        style="color: white; font-size: 150%; text-align: center; margin-top: 3%; font-family: Arial;"
       >
         דוח פעילויות
-      </h3></a
+      </h1></a
     >
     <select
       v-model="idk"
-      style="background-color: gray; text-align: right; margin-left: 70vw;"
+      style="background-color: orange; text-align: right; margin-left: 70vw;"
     >
       <option disabled value="">Please select one</option>
       <option>הכל</option>
@@ -20,17 +20,18 @@
     </select>
     <select
       v-model="idk2"
-      style="background-color: gray; text-align: right; margin-left: 20vw;"
+      style="background-color: orange; text-align: right; margin-left: 20vw;"
     >
       <option disabled value="">Please select one</option>
       <option>הכל</option>
       <option>מארב</option>
       <option>פטרול</option>
       <option>מחסום מכוניות</option>
+      <option>עוקץ</option>
     </select>
-    <div class="window" style="margin-top: 3%">
+    <div class="windows" style="margin-top: 3%">
       <button
-        class="roww"
+        class="rowww"
         v-for="(action, key) in filterByStatus()"
         :key="key"
         v-on:click="
@@ -47,7 +48,7 @@
       </button>
     </div>
     <button
-      style="background-color: #1b98e0; margin-left: 10%;"
+      style="background-color: #33415C; margin-left: 45%; width: 10%;   border-radius: 25px; "
       class="nextP"
       v-on:click="openModal2()"
     >
@@ -55,8 +56,8 @@
     </button>
 
     <transition name="fade">
-      <div class="modal" v-if="show">
-        <div class="modal__backdrop" @click="closeModal()" />
+      <div class="modals" v-if="show">
+        <div class="modals__backdrop" @click="closeModal()" />
 
         <div class="modal__dialog">
           <div class="modal__header">
@@ -71,31 +72,31 @@
             </button>
           </div>
 
-          <div class="modal__body">
+          <div class="modals__body">
             <h2>סוג פעולה: {{ currentAction.activity_type }}</h2>
             <h2>זמן מתוכנן לפעילות: {{ currentAction.date }}</h2>
             <h2>כוח מתוכנן: {{ currentActivityCops }}</h2>
             <h2>מטרת הפעילות: {{ currentAction.description }}</h2>
             <h2>אישור הפעילות: {{ currentAction.approved }}</h2>
-            <h2>מיקום: {{ currentAction.location }}</h2>
+            <!-- <h2>מיקום: {{ currentAction.location }}</h2> -->
             <button
-              class="omri"
+              class="buttons"
               style="background-color: green;"
               v-on:click="
                 changeStatus(currentAction.id, 1);
                 closeModal();
-                openModal3();
+                openModal3(1);
               "
             >
               הוצא פעולה !
             </button>
             <button
-              class="omri"
+              class="buttons"
               style="background-color: red;"
               v-on:click="
                 changeStatus(currentAction.id, 3);
                 closeModal();
-                openModal3();
+                openModal3(2);
               "
             >
               סיים פעולה !
@@ -111,11 +112,17 @@
     </transition>
 
     <transition name="fade">
-      <div class="modal" v-if="show3">
-        <div class="modal__backdrop" @click="closeModal3()" />
+      <div class="modals" v-if="show3">
+        <div class="modals__backdrop" @click="closeModal3()" />
         <div>
           <img
+            v-if="this.currGif === 1"
             src="https://media1.giphy.com/media/Wozl9UAP6DG9vOotl8/giphy.gif?cid=ecf05e476xpgl8lyvuz5vjwdseufm0150kuzujs5eonlq9n4&rid=giphy.gif&ct=g"
+            style="width:70%; height: auto; margin-left: 14%; margin-top: 3%"
+          />
+          <img
+            v-if="this.currGif === 2"
+            src="https://media.tenor.com/images/48a68ac274ee718ff561d20c52daeb78/tenor.gif"
             style="width:70%; height: auto; margin-left: 14%; margin-top: 3%"
           />
           <div class="modal__header">
@@ -141,8 +148,8 @@
     </transition>
 
     <transition name="fade">
-      <div class="modal" v-if="show2">
-        <div class="modal__backdrop" @click="closeModal2()" />
+      <div class="modals" v-if="show2">
+        <div class="modals__backdrop" @click="closeModal2()" />
 
         <div class="modal__dialog">
           <div class="modal__header">
@@ -236,7 +243,7 @@
               <label for="fname">מיקום</label>
             </div>
             <button
-              class="omri"
+              class="buttons"
               style="background-color: green;"
               v-on:click="
                 addAction();
@@ -281,6 +288,7 @@ export default {
       show: false,
       show2: false,
       show3: false,
+      currGif: null,
       currentAction: null,
       allActivities: null,
       allUsers: null,
@@ -412,11 +420,13 @@ export default {
       this.show2 = true;
       document.querySelector("body").classList.add("overflow-hidden");
     },
-    openModal3() {
+    openModal3(hello) {
+      this.currGif = hello;
       this.show3 = true;
       document.querySelector("body").classList.add("overflow-hidden");
     },
     closeModal3() {
+      this.currGif = null;
       this.show3 = false;
       document.querySelector("body").classList.add("overflow-hidden");
     },
@@ -475,27 +485,30 @@ export default {
 </script>
 
 <style>
-.roww {
+.rowww {
   width: 100%;
-  background-color: #80c5a0;
+  background-color: #33415c;
   height: 100px;
   text-align: right;
+  color: white;
   direction: rtl;
   border-radius: 30px;
   border-style: inset;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 150%;
   /* margin-left: 10%; */
 }
 
-.roww:hover {
-  background-color: #caf0f8;
+.rowww:hover {
+  background-color: #001845;
 }
 
 .multiselect {
   width: "10vw";
 }
 
-.omri {
-  background-color: #4caf50; /* Green */
+.buttons {
+  background-color: #002855; /* Green */
   border: none;
   color: white;
   padding: 15px 32px;
@@ -508,15 +521,15 @@ export default {
   justify-content: center;
 }
 
-.window {
-  background-color: #b4c5e4;
+.windows {
+  background-color: orange;
   height: 46vh;
   width: 71%;
-  margin-left: 10%;
+  margin-left: 14%;
   overflow: auto;
 }
 
-.modal {
+.modals {
   overflow-x: hidden;
   overflow-y: auto;
   position: fixed;
@@ -526,7 +539,7 @@ export default {
   left: 0;
   z-index: 9;
 }
-.modal__backdrop {
+.modals__backdrop {
   background-color: rgba(0, 0, 0, 0.3);
   position: fixed;
   top: 0;
@@ -558,7 +571,7 @@ export default {
   justify-content: space-between;
   flex: 1;
 }
-.modal__body {
+.modals__body {
   padding: 10px 20px 10px;
   overflow: auto;
   display: flex;
@@ -567,6 +580,8 @@ export default {
   text-align: right;
   flex: right;
   flex: 3;
+  border-radius: 15px 50px;
+  background-color: #002855;
 }
 .modal__footer {
   padding: 10px 20px 20px;

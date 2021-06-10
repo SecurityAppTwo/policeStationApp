@@ -6,7 +6,7 @@
       </div>
     </header>
 
-    <body class="window">
+    <body class="Login-window">
       <div class="loginInput"></div>
       <input
         class="username"
@@ -69,13 +69,13 @@ export default {
 </script>
 
 <style>
-.roww {
+.LoginPage {
   width: 100%;
-  background-color: #1b98e0;
+  background-color: #5c677d;
 }
 
-.window {
-  background-color: #b4c5e4;
+.Login-window {
+  background-color: #33415c;
   top: 50%;
   height: 45vh;
   width: 74%;
@@ -96,6 +96,7 @@ export default {
   height: 30px;
   display: flex;
   justify-content: center;
+  margin-left: 44%;
 }
 
 .password {
@@ -103,6 +104,7 @@ export default {
   height: 30px;
   display: flex;
   justify-content: center;
+  margin-left: 44%;
 }
 
 .loginButton {
@@ -110,5 +112,10 @@ export default {
   height: 30px;
   display: flex;
   justify-content: center;
+  margin-left: 48%;
+}
+
+.loginInput {
+  margin-left: 35%;
 }
 </style>

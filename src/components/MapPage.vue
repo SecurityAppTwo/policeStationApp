@@ -42,7 +42,6 @@ export default {
   height: 45vh;
   display: flex;
   justify-content: center;
-  
 }
 
 .title {

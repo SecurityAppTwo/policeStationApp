@@ -17,18 +17,37 @@
           </div>
 
           <div class="check">
-            <img src="./../assets/5.jpg" @click="moveToActions" />
-            <h4 v-if="showCheck" style="margin-top: 8px; color: #ffff;"></h4>
+            <img
+              src="./../assets/7.png"
+              @click="moveToActions"
+              @mouseover="showCheck = !showCheck"
+              @mouseout="showCheck = !showCheck"
+            />
+            <h4 v-if="showCheck" style="margin-top: 8px; color: #ffff;">
+              פעילויות
+            </h4>
           </div>
 
           <div class="coin">
-            <img src="./../assets/2.png" @click="moveToMap" />
-            <h4 v-if="showCoin" style="margin-top: 8px; color: #ffff;"></h4>
+            <img
+              src="./../assets/2.png"
+              @click="moveToMap"
+              @mouseover="showCoin = !showCoin"
+              @mouseout="showCoin = !showCoin"
+            />
+            <h4 v-if="showCoin" style="margin-top: 8px; color: #ffff;">מפה</h4>
           </div>
 
           <div class="user">
-            <img src="./../assets/3.png" @click="moveToReports" />
-            <h4 v-if="showUser" style="margin-top: 8px; color: #ffff;"></h4>
+            <img
+              src="./../assets/6.png"
+              @click="moveToReports"
+              @mouseover="showUser = !showUser"
+              @mouseout="showUser = !showUser"
+            />
+            <h4 v-if="showUser" style="margin-top: 8px; color: #ffff;">
+              דיווחים
+            </h4>
           </div>
         </div>
       </div>
@@ -51,12 +70,15 @@ export default {
   methods: {
     moveToMap() {
       this.$router.push("/MapPage");
+      this.$router.go();
     },
     moveToActions() {
       this.$router.push("/ActionsPage");
+      this.$router.go();
     },
     moveToReports() {
       this.$router.push("/ReportsPage");
+      this.$router.go();
     }
   }
 };
@@ -68,7 +90,7 @@ export default {
   height: 60px;
   background-color: orange;
   bottom: 100;
-  box-shadow: 0.1px 0.1px 15px 0.1px #273c75;
+  box-shadow: 0.1px 0.1px 15px 0.1px #023e7d;
   display: flex;
 }
 #home {
