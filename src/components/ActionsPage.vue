@@ -3,32 +3,42 @@
     <Navbar></Navbar>
     <a
       ><h1
-        style="color: white; font-size: 150%; text-align: center; margin-top: 3%; font-family: Arial;"
+        style="color: white; font-size: 4vw; text-align: center; margin-top: 3%;"
       >
         דוח פעילויות
       </h1></a
     >
-    <select
-      v-model="idk"
-      style="background-color: orange; text-align: right; margin-left: 70vw;"
-    >
-      <option disabled value="">Please select one</option>
-      <option>הכל</option>
-      <option>הסתיים</option>
-      <option>מתוכנן</option>
-      <option>פעיל</option>
-    </select>
-    <select
-      v-model="idk2"
-      style="background-color: orange; text-align: right; margin-left: 20vw;"
-    >
-      <option disabled value="">Please select one</option>
-      <option>הכל</option>
-      <option>מארב</option>
-      <option>פטרול</option>
-      <option>מחסום מכוניות</option>
-      <option>עוקץ</option>
-    </select>
+
+    <div class="selects">
+      <select
+        v-model="idk"
+        style="background-color: orange; text-align: right; margin-right: 1vw"
+      >
+        <option disabled value="">Please select one</option>
+        <option>הכל</option>
+        <option>הסתיים</option>
+        <option>מתוכנן</option>
+        <option>פעיל</option>
+      </select>
+      <div style="margin-right: 1vw; color: white;">
+        :סינון לפי סטטוס פעילות
+      </div>
+      <select
+        v-model="idk2"
+        style="background-color: orange; text-align: right; margin-left: 5vw; margin-right: 1vw"
+      >
+        <option disabled value="">Please select one</option>
+        <option>הכל</option>
+        <option>מארב</option>
+        <option>פטרול</option>
+        <option>מחסום מכוניות</option>
+        <option>עוקץ</option>
+      </select>
+      <div style="margin-right: 15vw; color: white;">
+        :סינון לפי סוג פעילות
+      </div>
+    </div>
+
     <div class="windows" style="margin-top: 3%">
       <button
         class="rowww"
@@ -153,9 +163,6 @@
 
         <div class="modal__dialog">
           <div class="modal__header">
-            <h1 style="color: red;">
-              פעילות חדשה
-            </h1>
             <slot name="header" />
             <button type="button" class="modal__close" @click="closeModal2()">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512">
@@ -165,86 +172,78 @@
                 ></path>
               </svg>
             </button>
+            <h1 style="color: #ffffff; font-size: 4vh; margin-right: 20vh">
+              פעילות חדשה
+            </h1>
           </div>
 
           <div class="modal__body">
-            <div>
-              <input
-                type="text"
-                id="location"
-                name="location"
-                v-model="description"
-                placeholder="מיקום.."
-              />
-              <label for="fname">תיאור</label>
-            </div>
-            <div>
-              <select v-model="type">
-                <option disabled value="">Please select one</option>
-                <option
-                  v-bind:value="type.id"
-                  v-for="(type, key) in allTypes"
-                  :key="key"
-                >
-                  {{ type.name }}
-                </option>
-              </select>
-              <label for="fname">סוג הפעולה</label>
-            </div>
-            <div>
-              <input
-                type="text"
-                id="time"
-                name="time"
-                v-model="time"
-                placeholder="זמן מתכונן.."
-              />
-              <label for="fname">זמן מתוכנן לפעילות</label>
-            </div>
-            <div>
-              <vueMultiSelect
-                :options="{ multi: true }"
-                v-model="power"
-                :selectOptions="this.allUsers"
-              />
-              <label for="fname">כוח מתוכנן</label>
-            </div>
-            <div>
-              <input
-                type="text"
-                id="target"
-                name="target"
-                v-model="target"
-                placeholder="מטרת הפעילות.."
-              />
-              <label for="fname">מטרת הפעילות</label>
-            </div>
-            <div>
-              <select v-model="approve">
-                <option disabled value="">Please select one</option>
-                <option
-                  v-bind:value="user.id"
-                  v-for="(user, key) in allUsers"
-                  :key="key"
-                >
-                  {{ user.name }}
-                </option>
-              </select>
-              <label for="fname">אישור הפעילות</label>
-            </div>
-            <div>
-              <input
-                type="text"
-                id="location"
-                name="location"
-                v-model="location"
-                placeholder="מיקום.."
-              />
-              <label for="fname">מיקום</label>
+            <div class="horizontal">
+              <div class="col">
+                <input
+                  class="lable"
+                  type="text"
+                  id="location"
+                  name="location"
+                  v-model="description"
+                  placeholder="מיקום.."
+                />
+                <select v-model="type" class="lable">
+                  <option disabled value="">בחר את סוג הפעולה</option>
+                  <option
+                    v-bind:value="type.id"
+                    v-for="(type, key) in allTypes"
+                    :key="key"
+                  >
+                    {{ type.name }}
+                  </option>
+                </select>
+                <input
+                  class="lable"
+                  type="text"
+                  id="time"
+                  name="time"
+                  v-model="time"
+                  placeholder="זמן מתכונן.."
+                />
+                <vueMultiSelect
+                  class="lable"
+                  :options="{ multi: true }"
+                  v-model="power"
+                  :selectOptions="this.allUsers"
+                />
+                <input
+                  class="lable"
+                  type="text"
+                  id="target"
+                  name="target"
+                  v-model="target"
+                  placeholder="מטרת הפעילות.."
+                />
+                <select v-model="approve" class="lable">
+                  <option disabled value="">מאשר הפעילות</option>
+                  <option
+                    v-bind:value="user.id"
+                    v-for="(user, key) in allUsers"
+                    :key="key"
+                  >
+                    {{ user.name }}
+                  </option>
+                </select>
+              </div>
+              <div class="col">
+                <label for="fname" class="textLable">תיאור</label>
+                <label for="fname" class="textLable">סוג הפעולה</label>
+                <label for="fname" class="textLable">זמן מתוכנן לפעילות</label>
+                <label for="fname" class="textLable">כוח מתוכנן</label>
+                <label for="fname" class="textLable">מטרת הפעילות</label>
+                <label for="fname" class="textLable">אישור הפעילות</label>
+              </div>
+
+              <slot name="body" />
             </div>
             <button
-              class="buttons"
-              style="background-color: green;"
+              class="createButton"
               v-on:click="
                 addAction();
                 closeModal2();
@@ -252,7 +251,6 @@
             >
               יצירת פעולה
             </button>
-            <slot name="body" />
           </div>
 
           <div class="modal__footer">
@@ -299,7 +297,9 @@ export default {
   },
   async created() {
     await axios
-      .get("http://localhost:8081/activities/types")
+      .get(
+        "http://police-server-securityapp2.apps.openforce.openforce.biz/activities/types"
+      )
       .then(response => {
         this.allTypes = response.data.map(type => ({
           name: type.name,
@@ -310,7 +310,9 @@ export default {
         throw e;
       });
     await axios
-      .get("http://localhost:8081/activities/all")
+      .get(
+        "http://police-server-securityapp2.apps.openforce.openforce.biz/activities/all"
+      )
       .then(response => {
         this.allActivities = response.data;
       })
@@ -319,7 +321,9 @@ export default {
       });
 
     await axios
-      .get("http://localhost:8081/activities/users")
+      .get(
+        "http://police-server-securityapp2.apps.openforce.openforce.biz/activities/users"
+      )
       .then(response => {
         this.allUsers = response.data;
       })
@@ -328,7 +332,9 @@ export default {
       });
 
     await axios
-      .get("http://localhost:8081/activities/cops")
+      .get(
+        "http://police-server-securityapp2.apps.openforce.openforce.biz/activities/cops"
+      )
       .then(response => {
         this.allCops = response.data.map(cop => ({
           name: cop.cop_name,
@@ -349,13 +355,18 @@ export default {
     },
     async changeStatus(id, status) {
       console.log(id);
-      await axios.put("http://localhost:8081/activities/changeStatus", {
-        id: id,
-        theStatus: status
-      });
+      await axios.put(
+        "http://police-server-securityapp2.apps.openforce.openforce.biz/activities/changeStatus",
+        {
+          id: id,
+          theStatus: status
+        }
+      );
 
       await axios
-        .get("http://localhost:8081/activities/all")
+        .get(
+          "http://police-server-securityapp2.apps.openforce.openforce.biz/activities/all"
+        )
         .then(response => {
           this.allActivities = response.data;
         })
@@ -457,20 +468,25 @@ export default {
       //     approvedBy: this.approve
       //   };
       await axios
-        .post("http://localhost:8081/activities/addActivity", {
-          description: this.description,
-          time: this.time,
-          location: this.location,
-          type: this.type,
-          power: this.power.map(current => current.id),
-          approve: this.approve
-        })
+        .post(
+          "http://police-server-securityapp2.apps.openforce.openforce.biz/activities/addActivity",
+          {
+            description: this.description,
+            time: this.time,
+            location: this.location,
+            type: this.type,
+            power: this.power.map(current => current.id),
+            approve: this.approve
+          }
+        )
         .then(function(response) {
           console.log(response);
         });
 
       await axios
-        .get("http://localhost:8081/activities/all")
+        .get(
+          "http://police-server-securityapp2.apps.openforce.openforce.biz/activities/all"
+        )
         .then(response => {
           this.allActivities = response.data;
         })
@@ -593,5 +609,44 @@ export default {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+.selects {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-end;
+  margin-top: 5vh;
+}
+
+.col {
+  display: flex;
+  flex-flow: column nowrap;
+  width: 50%;
+}
+
+.horizontal {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.lable {
+  margin-top: 1vh;
+  height: 3.2vh;
+}
+.createButton {
+  width: 20%;
+  margin-top: 1vh;
+  border-radius: 50vh;
+  background-color: rgba(0, 153, 0, 0.8);
+  height: 4vh;
+  font-weight: bold;
+  font-size: 0.8vw;
+  margin-left: 1%;
+  color: white;
+  border-width: 0vw;
+}
+.textLable {
+  margin-top: 1.4vh;
+  height: 3.2vh;
 }
 </style>

@@ -33,23 +33,23 @@ export default {
 </script>
 
 <style>
-.map {
-  /* margin-top: 20px; */
-  margin-bottom: 200px;
-  margin-left: 100px;
-  padding: 70px;
-  width: 80vw;
-  height: 45vh;
+.container {
   display: flex;
   justify-content: center;
+  align-items: center;
+}
+.map {
+  width: 70vw;
+  height: 40vh;
 }
 
 .title {
   display: flex;
   justify-content: center;
-  margin-top: 60px;
+  margin-top: 1vh;
   color: white;
   font-weight: bold;
-  font-size: 200%;
+  font-size: 4vw;
+  font-weight: 3vw;
 }
 </style>

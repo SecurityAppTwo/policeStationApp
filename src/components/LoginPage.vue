@@ -25,9 +25,12 @@
       <button class="loginButton" type="button" @click="login()">
         התחברות
       </button>
-      <p v-if="!confirmed">
+      <h3
+        v-if="!confirmed"
+        style="margin-left: 46%; color: red; font-family: Arial;"
+      >
         משתמש לא קיים
-      </p>
+      </h3>
     </body>
   </div>
 </template>
@@ -51,11 +54,12 @@ export default {
     async login() {
       await axios
         .get(
-          `http://localhost:8081/users/validateUser?username=${this.input.username}&password=${this.input.password}`
+          `http://police-server-securityapp2.apps.openforce.openforce.biz/users/validateUser?username=${this.input.username}&password=${this.input.password}`
         )
         .then(response => {
           if (response.data.isValid) {
             this.$router.push("/ActionsPage");
+            this.$router.go();
           } else {
             this.confirmed = false;
           }

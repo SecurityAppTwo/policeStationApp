@@ -2,7 +2,7 @@
   <div class="reportPage">
     <Navbar></Navbar>
     <a
-      ><h3 class="lastReports" style="text-align: center;">
+      ><h3 class="lastReports" style="text-align: center; font-size: 4vw">
         דיווחים אחרונים
       </h3></a
     >
@@ -82,7 +82,9 @@ export default {
   },
   async created() {
     await axios
-      .get("http://localhost:8081/reports/allEventsReported")
+      .get(
+        "http://police-server-securityapp2.apps.openforce.openforce.biz/reports/allEventsReported"
+      )
       .then(response => {
         this.allReports = response.data;
       })
@@ -92,7 +94,9 @@ export default {
       });
 
     await axios
-      .get("http://localhost:8081/reports/usersNameReports")
+      .get(
+        "http://police-server-securityapp2.apps.openforce.openforce.biz/reports/usersNameReports"
+      )
       .then(response => {
         this.allUsersReports = response.data;
       })
@@ -198,15 +202,6 @@ ul {
   color: #e6f9ff;
 }
 
-.modal__body {
-  text-align: center;
-  font-family: Arial, Helvetica, sans-serif;
-  border-radius: 15px 50px;
-  /* background-color: #5c677d; */
-  color: #e6f9ff;
-  font-size: 130%;
-}
-
 .nextP {
 }
 
@@ -228,13 +223,12 @@ ul {
   height: 35vh;
   width: 60%;
   overflow: auto;
-  border-radius: 15px 50px;
+  border-radius: 15px 15px;
   border: 0px;
   margin-top: 130px;
   margin-bottom: 200px;
   margin-left: 300px;
   padding: 70px;
-  border-color: orange;
   box-shadow: 4px 2px 4px 2px orange;
 }
 
@@ -258,7 +252,7 @@ ul {
   z-index: 1;
 }
 .modal__dialog {
-  background-color: #ffffff;
+  background-color: #5c677d;
   position: relative;
   width: 600px;
   margin: 50px auto;
@@ -266,7 +260,7 @@ ul {
   flex-direction: column;
   border-radius: 5px;
   z-index: 2;
-  border-radius: 15px 50px 30px;
+  border-radius: 15px 15px 15px;
 }
 .modal__close {
   width: 30px;
@@ -285,7 +279,12 @@ ul {
   flex-direction: column;
   align-items: stretch;
   text-align: right;
-  flex: right;
+  /* flex: right; */
+  background-color: orange;
+  font-family: Arial, Helvetica, sans-serif;
+  /* background-color: #5c677d; */
+  color: #e6f9ff;
+  font-size: 130%;
 }
 .modal__footer {
   padding: 10px 20px 20px;
