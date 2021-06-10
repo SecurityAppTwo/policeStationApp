@@ -48,7 +48,7 @@
       </button>
     </div>
     <button
-      style="background-color: #33415C; margin-left: 45%; width: 10%; "
+      style="background-color: #33415C; margin-left: 45%; width: 10%;   border-radius: 25px; "
       class="nextP"
       v-on:click="openModal2()"
     >
