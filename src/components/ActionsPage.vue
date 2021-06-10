@@ -85,7 +85,7 @@
               v-on:click="
                 changeStatus(currentAction.id, 1);
                 closeModal();
-                openModal3();
+                openModal3(1);
               "
             >
               הוצא פעולה !
@@ -96,7 +96,7 @@
               v-on:click="
                 changeStatus(currentAction.id, 3);
                 closeModal();
-                openModal3();
+                openModal3(2);
               "
             >
               סיים פעולה !
@@ -116,7 +116,13 @@
         <div class="modals__backdrop" @click="closeModal3()" />
         <div>
           <img
+            v-if="this.currGif === 1"
             src="https://media1.giphy.com/media/Wozl9UAP6DG9vOotl8/giphy.gif?cid=ecf05e476xpgl8lyvuz5vjwdseufm0150kuzujs5eonlq9n4&rid=giphy.gif&ct=g"
+            style="width:70%; height: auto; margin-left: 14%; margin-top: 3%"
+          />
+          <img
+            v-if="this.currGif === 2"
+            src="https://media.tenor.com/images/48a68ac274ee718ff561d20c52daeb78/tenor.gif"
             style="width:70%; height: auto; margin-left: 14%; margin-top: 3%"
           />
           <div class="modal__header">
@@ -282,6 +288,7 @@ export default {
       show: false,
       show2: false,
       show3: false,
+      currGif: null,
       currentAction: null,
       allActivities: null,
       allUsers: null,
@@ -413,11 +420,13 @@ export default {
       this.show2 = true;
       document.querySelector("body").classList.add("overflow-hidden");
     },
-    openModal3() {
+    openModal3(hello) {
+      this.currGif = hello;
       this.show3 = true;
       document.querySelector("body").classList.add("overflow-hidden");
     },
     closeModal3() {
+      this.currGif = null;
       this.show3 = false;
       document.querySelector("body").classList.add("overflow-hidden");
     },
